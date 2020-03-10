@@ -1,6 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.xabikestand">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
-    <application android:label="XaBikeStand.Android"></application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.xabikestand" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+	<application android:label="XaBikeStand.Android">
+
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDEdE0bs9qaOSbLmOTuiE0Oo8ZfuNp6tVk"/>
+    
+  </application>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

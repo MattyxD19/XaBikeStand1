@@ -14,6 +14,9 @@ namespace XaBikeStand.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
+
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 

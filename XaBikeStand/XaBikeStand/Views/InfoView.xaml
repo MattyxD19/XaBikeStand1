@@ -5,7 +5,7 @@
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.InfoView">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="LightBlue">
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
