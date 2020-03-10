@@ -6,9 +6,12 @@
              x:Class="XaBikeStand.Views.AccountView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Konto informationer" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            <Entry x:Name="AccountName" Placeholder="Kontonavn" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Entry>
+            <Entry x:Name="AccountAdress" Placeholder="Addresse" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Entry>
+            <Entry x:Name="AccountEmail" Placeholder="E-mail" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Entry>
+            <Button x:Name="ChangeAccountInfo" BackgroundColor="LightGray" Text="Ændre information" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Button>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
