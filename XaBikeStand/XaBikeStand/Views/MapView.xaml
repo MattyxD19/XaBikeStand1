@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.MapView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <maps:Map WidthRequest="420" HeightRequest="300"
+            x:Name="MyMap" IsShowingUser="True" MapType="Hybrid"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
