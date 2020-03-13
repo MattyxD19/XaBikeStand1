@@ -6,15 +6,9 @@
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.MapView">
     <ContentPage.Content>
-
-        
-        
-        <StackLayout BackgroundColor="LightBlue">
-            <Grid Grid.RowSpan="3" Grid.ColumnSpan="5">
-                <maps:Map WidthRequest="420" HeightRequest="300" x:Name="MyMap" IsShowingUser="True" MapType="Hybrid"/>    
-            </Grid>
-            <Button x:Name="UnlockBike" Text="Unlock Bike" HorizontalOptions="CenterAndExpand" Command="{Binding UnlockCMD}" CommandParameter="{Binding Source={x:Reference UnlockBike}}"></Button>
-            <Button x:Name="LockBike" Text="Lock Bike" HorizontalOptions="CenterAndExpand" Command="{Binding LockCMD}" CommandParameter="{Binding Source={x:Reference LockBike}}"></Button>
+        <StackLayout>
+            <maps:Map WidthRequest="420" HeightRequest="300"
+            x:Name="MyMap" IsShowingUser="True" MapType="Hybrid"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
