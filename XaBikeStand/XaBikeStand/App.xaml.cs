@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XaBikeStand.Models;
 
 namespace XaBikeStand
 {
@@ -24,7 +25,6 @@ namespace XaBikeStand
             ServiceContainer.Register<MapViewModel>(() => new MapViewModel());
             ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
             ServiceContainer.Register<InfoViewModel>(() => new InfoViewModel());
-            ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
             ServiceContainer.Register<AboutUsViewModel>(() => new AboutUsViewModel());
 
 
