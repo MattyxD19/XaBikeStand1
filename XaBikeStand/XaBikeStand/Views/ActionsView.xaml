@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
+             baseViewModel:ViewModelLocator.AutoWireViewModel="true"
+             x:Class="XaBikeStand.Views.ActionsView">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+
+                <Entry 
+                    x:Name="EnterBikeRackID"
+                    Placeholder="StationsID"
+                    Text="{Binding StationID}"
+                    Grid.Row="1"
+                    >
+                    <Entry.Behaviors>
+                        <CustomBehavior:EventToCommandBehavior 
+                            EventName="Unfocused" 
+                            Command="{Binding StationEntryUnfocused}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+
+                <Entry
+                    x:Name="LockNumber"
+                    Placeholder="Låsens nummer"
+                    Text="{Binding LockID}"
+                    Grid.Row="2">
+                    <Entry.Behaviors>
+                        <CustomBehavior:EventToCommandBehavior 
+                            EventName="Unfocused" 
+                            Command="{Binding LockEntryUnfocused}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+
+                <Button 
+                    x:Name="UnlockBike" 
+                    Text="Unlock Bike" 
+                    IsEnabled="{Binding UnlockEnabled}"
+                    Command="{Binding UnlockCMD}"
+                    CommandParameter="{Binding Source={x:Reference UnlockBike}}"
+                    Grid.Row="3"/>
+                
+                <Button 
+                    x:Name="LockBike" 
+                    Text="Lock Bike"
+                    IsEnabled="{Binding LockEnabled}"
+                    Command="{Binding LockCMD}" 
+                    CommandParameter="{Binding Source={x:Reference LockBike}}"
+                    Grid.Row="4"/>
+
+                <Label 
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Tilføj en ven som kan låne din cykel"
+                    FontSize="Large"
+                    TextColor="Black"
+                    Grid.Row="5"/>
+
+                <Entry
+                    x:Name="FriendEntry"
+                    Placeholder="Email"
+                    Text="{Binding FriendEmail}"
+                    Grid.Row="6">
+                    <Entry.Behaviors>
+                        <CustomBehavior:EventToCommandBehavior 
+                            EventName="Unfocused" 
+                            Command="{Binding FriendEntryUnfocused}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Button
+                    x:Name="AddFriendButton"
+                    Text="Tilføj ven"
+                    IsEnabled="{Binding AddFriend}"
+                    Grid.Row="7"/>
+
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

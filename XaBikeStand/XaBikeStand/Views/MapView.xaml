@@ -7,28 +7,7 @@
              x:Class="XaBikeStand.Views.MapView">
     <ContentPage.Content>
         <StackLayout>
-            <Grid Grid.RowSpan="3" Grid.ColumnSpan="5">
-                <ContentView 
-                    Content="{Binding Map}"
-                    VerticalOptions="FillAndExpand" 
-                    HeightRequest="400"/>
-            </Grid>
-            <Button 
-                x:Name="UnlockBike" 
-                Text="Unlock Bike" 
-                HorizontalOptions="CenterAndExpand"
-                Command="{Binding UnlockCMD}"
-                CommandParameter="{Binding Source={x:Reference UnlockBike}}">
-                
-            </Button>
-            <Button 
-                x:Name="LockBike" 
-                Text="Lock Bike" 
-                HorizontalOptions="CenterAndExpand"
-                Command="{Binding LockCMD}" 
-                CommandParameter="{Binding Source={x:Reference LockBike}}">
-                
-            </Button>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

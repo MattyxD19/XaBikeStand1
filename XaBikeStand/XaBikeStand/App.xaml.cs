@@ -22,6 +22,7 @@ namespace XaBikeStand
             _settingsService = ServiceContainer.Resolve<ISettingsService>();
             ServiceContainer.Register<INavigationService>(() => new NavigationService(_settingsService));
 
+            ServiceContainer.Register<ActionsViewModel>(() => new ActionsViewModel());
             ServiceContainer.Register<MapViewModel>(() => new MapViewModel());
             ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
             ServiceContainer.Register<InfoViewModel>(() => new InfoViewModel());

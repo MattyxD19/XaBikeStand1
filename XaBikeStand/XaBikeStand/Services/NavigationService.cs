@@ -33,7 +33,7 @@ namespace XaBikeStand.Services
         public Task InitializeAsync()
         {
             //return NavigateToAsync<UserNameViewModel>();
-            return NavigateToAsync<MapViewModel>();//The startpage
+            return NavigateToAsync<ActionsViewModel>();//The startpage
 
             //if (string.IsNullOrEmpty(_settingsService.AuthAccessToken))
             //return NavigateToAsync<MenuViewModel>();

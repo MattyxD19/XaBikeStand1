@@ -1,95 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
 
 namespace XaBikeStand.ViewModels
 {
-    class MapViewModel : BaseViewModel
-    {
+    class MapViewModel : BaseViewModel, INotifyPropertyChanged
+    {       
 
-        public MapViewModel()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+       
+
+        private double _Longitude;
+
+        public double Longitude
         {
-            //multiple types of "Map" 
-            Map = new Xamarin.Forms.Maps.Map();
+            get 
+            { 
+                return _Longitude; 
+            }
+            set 
+            {
+                _Longitude = value;
+                OnPropertyChanged();
+            }
         }
 
-        //Same ambigous types of "Map"
-        public Xamarin.Forms.Maps.Map Map { get; set; }
+        private double _Latitude;
 
-
-        #region --Command implementations--
-
-        public ICommand UnlockCMD => new Command<Button>(async (Button UnlockBike) =>
+        public double Latitude
         {
-            
-
-            try
+            get
             {
-                var location = await Geolocation.GetLastKnownLocationAsync();
-
-                if (location != null)
-                {
-                    Console.WriteLine("Unlock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
+                return _Latitude;
             }
-            catch (FeatureNotSupportedException fnsEx)
+            set
             {
-                Console.WriteLine("Handle not supported on device exception");
+                _Latitude = value;
+                OnPropertyChanged();
             }
-            catch (FeatureNotEnabledException fneEx)
-            {
-                Console.WriteLine("Handle not enabled on device exception");
-            }
-            catch (PermissionException pEx)
-            {
-                Console.WriteLine("Handle permission exception");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
-            }
+        }
 
 
-        });
+        //private void  GetPosition()
+        //{
+        //    try
+        //    {
+        //        var location = Geolocation.GetLastKnownLocationAsync();
 
-        public ICommand LockCMD => new Command<Button>(async (Button LockBike) =>
+        //        if (location != null)
+        //        {
+        //            Console.WriteLine("Unlock CMD works!");
+        //            Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+        //        }
+        //    }
+        //    catch (FeatureNotSupportedException fnsEx)
+        //    {
+        //        Console.WriteLine("Handle not supported on device exception");
+        //    }
+        //}
+
+        public double Loc { get; set; }
+
+        
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-            try
-            {
-                var location = await Geolocation.GetLastKnownLocationAsync();
 
-                if (location != null)
-                {
-                    Console.WriteLine("Lock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
-            }
-            catch (FeatureNotSupportedException fnsEx)
-            {
-                Console.WriteLine("Handle not supported on device exception");
-            }
-            catch (FeatureNotEnabledException fneEx)
-            {
-                Console.WriteLine("Handle not enabled on device exception");
-            }
-            catch (PermissionException pEx)
-            {
-                Console.WriteLine("Handle permission exception");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
-            }
-
-        });
-
-        #endregion
     }
 }

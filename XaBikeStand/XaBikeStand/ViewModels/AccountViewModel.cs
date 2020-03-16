@@ -117,7 +117,7 @@ namespace XaBikeStand.ViewModels
      
        
 
-        public ICommand ChangeInfoCMD => new Command(async () =>
+        public Command ChangeInfoCMD => new Command(async () =>
         {
             //Just testing
             AccountUserName = "Mathias";

@@ -29,6 +29,12 @@ namespace XaBikeStand.Views
         {
             var list = new List<MasterMenuItems>();
 
+            list.Add(new MasterMenuItems() { 
+                Text = "Cykelsiden",
+                Detail = "Hent, lås eller del din cykel med en ven",
+                TargetViewModel = typeof(ActionsViewModel)
+            });
+
             list.Add(new MasterMenuItems()
             {
                 Text = "Kort",
@@ -38,9 +44,8 @@ namespace XaBikeStand.Views
 
             list.Add(new MasterMenuItems()
             {
-                Text = "About us",
-                Detail = "Check us out!",
-                ImagePath = "grill.png",
+                Text = "Om os",
+                Detail = "",
                 TargetViewModel = typeof(AboutUsViewModel)
             });
 
@@ -48,7 +53,6 @@ namespace XaBikeStand.Views
             {
                 Text = "Info",
                 Detail = "Information",
-                ImagePath = "spider.jpg",
                 TargetViewModel = typeof(InfoViewModel)
             });
 
@@ -56,7 +60,6 @@ namespace XaBikeStand.Views
             { 
                 Text = "Konto",
                 Detail = "Konto information",
-                ImagePath = "spider.jpg",
                 TargetViewModel = typeof(AccountViewModel)
             });
             
