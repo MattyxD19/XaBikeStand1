@@ -196,6 +196,7 @@ namespace XaBikeStand.ViewModels
         private void FriendEntryValidation(object FriendEntry)
         {
             AddFriend = true;
+            FriendEmail = _FriendEmail;
         }
         private void StationEntryValidation(object FriendEntry)
         {
