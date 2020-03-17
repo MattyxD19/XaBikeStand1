@@ -40,7 +40,8 @@ namespace XaBikeStand.Views
             Label = "Fitness World",
             Address = "Fitness World",
             Type = PinType.Place,
-            Position = new Position(54.919936, 9.807708)
+            Position = new Position(54.919936, 9.807708),
+            
         };
 
         Map AppMap = new Map
@@ -57,6 +58,7 @@ namespace XaBikeStand.Views
             AppMap.MoveToRegion(startSpan);
 
             AppMap.Pins.Add(alsionPin);
+            
             AppMap.Pins.Add(FitnessWorldPin);
 
             
