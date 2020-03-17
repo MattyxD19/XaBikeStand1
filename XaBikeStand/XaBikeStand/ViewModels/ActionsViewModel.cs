@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using XaBikeStand.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -12,13 +14,18 @@ namespace XaBikeStand.ViewModels
     class ActionsViewModel : BaseViewModel, INotifyPropertyChanged
     {
 
+
         public ActionsViewModel()
         {
             FriendEntryUnfocused = new Command(FriendEntryValidation);
             StationEntryUnfocused = new Command(StationEntryValidation);
             LockEntryUnfocused = new Command(LockEntryValidation);
             AddFriend = false;
+            serverClient = new ServerClient();
+            LockVisible = true;
         }
+
+        ServerClient serverClient;
 
         public bool stationIDEntered = false;
         public bool lockIDEntered = false;
@@ -80,32 +87,32 @@ namespace XaBikeStand.ViewModels
         }
 
 
-        private bool _UnlockEnabled;
+        private bool _UnlockVisible;
 
-        public bool UnlockEnabled
+        public bool UnlockVisible
         {
             get 
             { 
-                return _UnlockEnabled; 
+                return _UnlockVisible; 
             }
             set 
             { 
-                _UnlockEnabled = value;
+                _UnlockVisible = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _LockEnabled;
+        private bool _LockVisible;
 
-        public bool LockEnabled
+        public bool LockVisible
         {
             get
             {
-                return _LockEnabled;
+                return _LockVisible;
             }
             set
             {
-                _LockEnabled = value;
+                _LockVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -129,54 +136,36 @@ namespace XaBikeStand.ViewModels
 
         public Command UnlockCMD => new Command(async () =>
         {
-           
-            LockEnabled = true;
-            if (UnlockEnabled == true)
-            {
-                UnlockEnabled = false;
-            }
+            bool succes = serverClient.Unlock();
 
-            try
+            if (succes)
             {
-                var location = await Geolocation.GetLastKnownLocationAsync();
-
-                if (location != null)
-                {
-                    Console.WriteLine("Unlock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
+                LockVisible = true;
+                UnlockVisible = false;
             }
 
 
+            
         });
 
         public Command LockCMD => new Command(async () =>
         {
+            bool succes = false;
+            if (int.TryParse(LockID, out int convertedLockID))
+            {
+               succes = serverClient.Lock(convertedLockID);
+            } else
+            {
+                // error
+            }
+            Console.WriteLine(  "this worked " + succes);
+            if (succes)
+            {
+                LockVisible = false;
+                UnlockVisible = true;
+            }
+
             
-            UnlockEnabled = true;
-            if (LockEnabled == true)
-            {
-                LockEnabled = false;
-            }
-
-            try
-            {
-                var location = await Geolocation.GetLastKnownLocationAsync();
-
-                if (location != null)
-                {
-                    Console.WriteLine("Lock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
-            }
 
         });
 
