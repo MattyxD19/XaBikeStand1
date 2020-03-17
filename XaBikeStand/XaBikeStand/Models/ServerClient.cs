@@ -8,42 +8,47 @@ using System.Text;
 
 namespace XaBikeStand.Models
 {
-    public class ServerClient { 
-
-    private const String standardAddress = "https://bikerack.azurewebsites.net/";
-    public ServerClient()
+    public class ServerClient
     {
+        private const String local = "http://localhost:3000/";
+        private const String azure = "https://bikerack.azurewebsites.net/";
+        private const String standardAddress = azure;
 
-    }
+        private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIiLCJpYXQiOjE1ODQ0NjYzNzAsImV4cCI6MTU4NDU1Mjc3MH0.HmxXqRGl4ZgiRydIsihHWuNE6l8pg_iEC5nm48RLuJw";
+        public ServerClient()
+        {
 
-        //public ObservableCollection<User> GetCurrentProducts()
-        //{
-        //    String responseFromServer = "";
-        //    WebRequest request = WebRequest.Create(standardAddress + "CurrentProducts");
-        //    request.Method = "GET";
-        //    request.ContentType = "application/json";
+        }
+
+        public ObservableCollection<BikeStation> GetBikeStations()
+        {
+            String responseFromServer = "";
+            WebRequest request = WebRequest.Create(standardAddress + "bikestations");
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", token);
 
 
-        //    responseFromServer = GetResponse(request);
-        //    ObservableCollection<Product> tbl_CurrentProduct = JsonConvert.DeserializeObject<ObservableCollection<Product>>(responseFromServer);
-        //    return tbl_CurrentProduct;
-        //}
+            responseFromServer = GetResponse(request);
+            ObservableCollection<BikeStation> bikeStations = JsonConvert.DeserializeObject<ObservableCollection<BikeStation>>(responseFromServer);
+            return bikeStations;
+        }
 
-        //private String GetResponse(WebRequest request)
-        //{
-        //    String responseFromServer = "";
-        //    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-        //    {
-        //        using (Stream responseStream = response.GetResponseStream())
-        //        {
-        //            using (StreamReader reader = new StreamReader(responseStream))
+        private String GetResponse(WebRequest request)
+        {
+            String responseFromServer = "";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(responseStream))
 
-        //                responseFromServer = reader.ReadToEnd();
-        //        }
+                        responseFromServer = reader.ReadToEnd();
+                }
 
-        //        return responseFromServer;
-        //    }
-        //}
+                return responseFromServer;
+            }
+        }
 
         //public bool PostData(ISerializable serializable, String target)
         //{
@@ -72,28 +77,46 @@ namespace XaBikeStand.Models
         //    }
         //}
 
-        public bool Action(String target)
+        public bool Lock(int bikestandID)
         {
             String statusCodeFromServer = "";
-            int bikestandID = 1;
-            if (target.Equals(Target.Lock))
-            {
-                target = standardAddress + target + "/" + bikestandID;
-                Console.WriteLine(target);
-            } else if (target.Equals(Target.Unlock))
-            {
-                target = standardAddress + target;
-            }
+            String target = standardAddress + "lock/" + bikestandID;
+
+
+
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIiLCJpYXQiOjE1ODQzNzk1OTUsImV4cCI6MTU4NDQ2NTk5NX0.gILjWECGtKzrJY7YLiLFc5uWmxPXWJbf1BVwlGal-0k");
+            request.Headers.Add("x-access-token", token);
 
             using (Stream requestStream = request.GetRequestStream())
-            { 
-
+            {
                 statusCodeFromServer = GetStatusCode(request);
-                if (statusCodeFromServer.Equals("200"))
+
+                if (statusCodeFromServer.Equals("OK"))
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        public bool Unlock()
+        {
+            String statusCodeFromServer = "";
+
+            String target = standardAddress + "unlock";
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", token);
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                statusCodeFromServer = GetStatusCode(request);
+                if (statusCodeFromServer.Equals("OK"))
                 {
                     return true;
                 }
@@ -101,17 +124,35 @@ namespace XaBikeStand.Models
             }
         }
 
+        public Availability GetAvailability(String bikeStationID)
+        {
+            String response = "";
+
+            String target = standardAddress + "bikestations/GetAvailability/as";
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", token);
+
+
+            response = GetResponse(request);
+
+
+            return JsonConvert.DeserializeObject<Availability>(response);
+
+        }
 
 
 
         private String GetStatusCode(WebRequest request)
-    {
-        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
         {
-            return response.StatusCode.ToString();
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                return response.StatusCode.ToString();
+            }
         }
     }
-}
 }
 
 

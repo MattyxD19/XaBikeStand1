@@ -8,25 +8,11 @@
     <ContentPage.Content>
         <StackLayout>
             <Grid>
-
-                <Entry 
-                    x:Name="EnterBikeRackID"
-                    Placeholder="StationsID"
-                    Text="{Binding StationID}"
-                    Grid.Row="1"
-                    >
-                    <Entry.Behaviors>
-                        <CustomBehavior:EventToCommandBehavior 
-                            EventName="Unfocused" 
-                            Command="{Binding StationEntryUnfocused}" />
-                    </Entry.Behaviors>
-                </Entry>
-
-
                 <Entry
-                    x:Name="LockNumber"
+                    x:Name="BikeStandNumber"
                     Placeholder="Låsens nummer"
                     Text="{Binding LockID}"
+                    Keyboard="Numeric"
                     Grid.Row="2">
                     <Entry.Behaviors>
                         <CustomBehavior:EventToCommandBehavior 
@@ -39,7 +25,7 @@
                 <Button 
                     x:Name="UnlockBike" 
                     Text="Unlock Bike" 
-                    IsEnabled="{Binding UnlockEnabled}"
+                    IsVisible="{Binding UnlockVisible}"
                     Command="{Binding UnlockCMD}"
                     CommandParameter="{Binding Source={x:Reference UnlockBike}}"
                     Grid.Row="3"/>
@@ -47,10 +33,10 @@
                 <Button 
                     x:Name="LockBike" 
                     Text="Lock Bike"
-                    IsEnabled="{Binding LockEnabled}"
+                    IsVisible="{Binding LockVisible}"
                     Command="{Binding LockCMD}" 
                     CommandParameter="{Binding Source={x:Reference LockBike}}"
-                    Grid.Row="4"/>
+                    Grid.Row="3"/>
 
                 <Label 
                     HorizontalOptions="CenterAndExpand"

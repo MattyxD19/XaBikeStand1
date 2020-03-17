@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using XaBikeStand.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -12,56 +14,58 @@ namespace XaBikeStand.ViewModels
     class ActionsViewModel : BaseViewModel, INotifyPropertyChanged
     {
 
+
         public ActionsViewModel()
         {
             FriendEntryUnfocused = new Command(FriendEntryValidation);
             StationEntryUnfocused = new Command(StationEntryValidation);
             LockEntryUnfocused = new Command(LockEntryValidation);
             AddFriend = false;
+            serverClient = new ServerClient();
+            LockVisible = true;
         }
 
-        public bool stationIDEntered = false;
+        ServerClient serverClient;
 
+        public bool stationIDEntered = false;
         public bool lockIDEntered = false;
 
-        #region --Custom behaviors properties
         /**
-         * Custom behaviors has been added to check if there is data
-         * in the entries, they are updated if the user unfocuses on the entries
+         * A custom behavior has been added to check if there is data
+         * in the entries, they are updated if the user is not focused on the entries
          */
         public ICommand FriendEntryUnfocused { get; protected set; }
         public ICommand StationEntryUnfocused { get; protected set; }
         public ICommand LockEntryUnfocused { get; protected set; }
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #region --Bindings--
         private string _FriendEmail;
 
         public string FriendEmail
         {
-            get
-            {
+            get 
+            { 
                 return _FriendEmail;
             }
-            set
-            {
+            set 
+            { 
                 _FriendEmail = value;
                 OnPropertyChanged();
             }
         }
+
 
         private string _StationID;
 
         public string StationID
         {
             get
-            {
-                return _StationID;
+            { 
+                return _StationID; 
             }
-            set
-            {
+            set 
+            { 
                 _StationID = value;
                 OnPropertyChanged();
             }
@@ -82,32 +86,33 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        private bool _UnlockEnabled;
 
-        public bool UnlockEnabled
+        private bool _UnlockVisible;
+
+        public bool UnlockVisible
         {
-            get
-            {
-                return _UnlockEnabled;
+            get 
+            { 
+                return _UnlockVisible; 
             }
-            set
-            {
-                _UnlockEnabled = value;
+            set 
+            { 
+                _UnlockVisible = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _LockEnabled;
+        private bool _LockVisible;
 
-        public bool LockEnabled
+        public bool LockVisible
         {
             get
             {
-                return _LockEnabled;
+                return _LockVisible;
             }
             set
             {
-                _LockEnabled = value;
+                _LockVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -126,59 +131,41 @@ namespace XaBikeStand.ViewModels
                 OnPropertyChanged();
             }
         }
-        #endregion
 
         #region --Command implementations--
 
         public Command UnlockCMD => new Command(async () =>
         {
-           
-            LockEnabled = true;
-            if (UnlockEnabled == true)
+            bool succes = serverClient.Unlock();
+
+            if (succes)
             {
-                UnlockEnabled = false;
+                LockVisible = true;
+                UnlockVisible = false;
             }
 
-            try
-            {
-                var location = await Geolocation.GetLastKnownLocationAsync();
 
-                if (location != null)
-                {
-                    Console.WriteLine("Unlock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
-            }
-
+            
         });
 
         public Command LockCMD => new Command(async () =>
         {
+            bool succes = false;
+            if (int.TryParse(LockID, out int convertedLockID))
+            {
+               succes = serverClient.Lock(convertedLockID);
+            } else
+            {
+                // error
+            }
+            Console.WriteLine(  "this worked " + succes);
+            if (succes)
+            {
+                LockVisible = false;
+                UnlockVisible = true;
+            }
+
             
-            UnlockEnabled = true;
-            if (LockEnabled == true)
-            {
-                LockEnabled = false;
-            }
-
-            try
-            {
-                var location = await Geolocation.GetLastKnownLocationAsync();
-
-                if (location != null)
-                {
-                    Console.WriteLine("Lock CMD works!");
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to get location");
-            }
 
         });
 
@@ -189,30 +176,31 @@ namespace XaBikeStand.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region --Validation--
         /**
          * The following three methods are used for entry validation
          * they are currently only checking for any value in the entries
          * but they should preferably check for valid data in the back-end
          */
 
-        private void FriendEntryValidation()
+        private void FriendEntryValidation(object FriendEntry)
         {
             AddFriend = true;
             FriendEmail = _FriendEmail;
         }
-        private void StationEntryValidation()
+        private void StationEntryValidation(object FriendEntry)
         {
             stationIDEntered = true;
             StationID = _StationID;
             Console.WriteLine(_StationID);
         }
-        private void LockEntryValidation()
+        private void LockEntryValidation(object FriendEntry)
         {
             lockIDEntered = true;
             LockID = _LockID;
             Console.WriteLine(_LockID);
         }
-        #endregion
+
+
+
     }
 }
