@@ -16,7 +16,7 @@
                 <Entry x:Name="AccountName" 
                        Text="{Binding AccountUserName}" 
                        Placeholder="Brugernavn" 
-                       IsEnabled="{Binding EnableSaveButton}"
+                       IsEnabled="false"
                        Grid.Row="3">
                     
                 </Entry>

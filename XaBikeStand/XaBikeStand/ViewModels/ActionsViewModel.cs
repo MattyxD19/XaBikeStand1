@@ -21,44 +21,47 @@ namespace XaBikeStand.ViewModels
         }
 
         public bool stationIDEntered = false;
+
         public bool lockIDEntered = false;
 
+        #region --Custom behaviors properties
         /**
-         * A custom behavior has been added to check if there is data
-         * in the entries, they are updated if the user is not focused on the entries
+         * Custom behaviors has been added to check if there is data
+         * in the entries, they are updated if the user unfocuses on the entries
          */
         public ICommand FriendEntryUnfocused { get; protected set; }
         public ICommand StationEntryUnfocused { get; protected set; }
         public ICommand LockEntryUnfocused { get; protected set; }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #region --Bindings--
         private string _FriendEmail;
 
         public string FriendEmail
         {
-            get 
-            { 
+            get
+            {
                 return _FriendEmail;
             }
-            set 
-            { 
+            set
+            {
                 _FriendEmail = value;
                 OnPropertyChanged();
             }
         }
-
 
         private string _StationID;
 
         public string StationID
         {
             get
-            { 
-                return _StationID; 
+            {
+                return _StationID;
             }
-            set 
-            { 
+            set
+            {
                 _StationID = value;
                 OnPropertyChanged();
             }
@@ -79,17 +82,16 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-
         private bool _UnlockEnabled;
 
         public bool UnlockEnabled
         {
-            get 
-            { 
-                return _UnlockEnabled; 
+            get
+            {
+                return _UnlockEnabled;
             }
-            set 
-            { 
+            set
+            {
                 _UnlockEnabled = value;
                 OnPropertyChanged();
             }
@@ -124,6 +126,7 @@ namespace XaBikeStand.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         #region --Command implementations--
 
@@ -150,7 +153,6 @@ namespace XaBikeStand.ViewModels
             {
                 Console.WriteLine("Unable to get location");
             }
-
 
         });
 
@@ -187,31 +189,30 @@ namespace XaBikeStand.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region --Validation--
         /**
          * The following three methods are used for entry validation
          * they are currently only checking for any value in the entries
          * but they should preferably check for valid data in the back-end
          */
 
-        private void FriendEntryValidation(object FriendEntry)
+        private void FriendEntryValidation()
         {
             AddFriend = true;
             FriendEmail = _FriendEmail;
         }
-        private void StationEntryValidation(object FriendEntry)
+        private void StationEntryValidation()
         {
             stationIDEntered = true;
             StationID = _StationID;
             Console.WriteLine(_StationID);
         }
-        private void LockEntryValidation(object FriendEntry)
+        private void LockEntryValidation()
         {
             lockIDEntered = true;
             LockID = _LockID;
             Console.WriteLine(_LockID);
         }
-
-
-
+        #endregion
     }
 }
