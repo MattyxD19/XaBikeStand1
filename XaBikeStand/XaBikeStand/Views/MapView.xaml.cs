@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XaBikeStand.Models;
 using XaBikeStand.Services;
+using XaBikeStand.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -21,38 +22,31 @@ namespace XaBikeStand.Views
          * Breaking the MVVM pattern since it was hard to bind the map
          * -Mathias
          */
-        public List<Pin> listPins = new List<Pin>();
+
+        private MapViewModel ViewModel => BindingContext as MapViewModel;
 
         public MapView()
         {
             InitializeComponent();
             Mapcontent();
+            BindingContext = new MapViewModel();
             
-            foreach (var pin in listPins)
-            {
-                AppMap.Pins.Add(pin);
-            }
-            Content = AppMap;
             
-        }
 
-
-
-        Map AppMap = new Map
-        {
-            MapType = MapType.Street,
-            IsShowingUser = true,
+            //foreach (var pin in listPins)
+            //{
+            //    AppMap.Pins.Add(pin);
+            //}
+            //Content = AppMap;
             
-        };
-
-        
+        }       
 
 
         public void Mapcontent()
         {
             Position position = new Position(54.912794, 9.779231);
             MapSpan startSpan = new MapSpan(position, 0.01, 0.01);
-            AppMap.MoveToRegion(startSpan);
+            //AppMap.MoveToRegion(startSpan);
         }
 
 
