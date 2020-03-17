@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Login.Models;
+using XaBikeStand.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Login.Views
+namespace XaBikeStand.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
