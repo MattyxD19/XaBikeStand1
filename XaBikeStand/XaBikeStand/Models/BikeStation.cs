@@ -4,11 +4,14 @@ using System.Text;
 
 namespace XaBikeStand.Models
 {
-    class BikeStation
+    public class BikeStation : ISerializable
     {
-        public int BikeStandID { get; set; }
-        public bool IsWorking { get; set; }
-        public string BikeStationID { get; set; }
-        public bool InUse { get; set; }
+        public String bikeStationID { get; set; }
+        public String title { get; set; }
+        public double longtitude { get; set; }
+
+        public double latitude { get; set; }
+
+
     }
 }
