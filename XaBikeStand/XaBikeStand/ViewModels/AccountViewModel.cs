@@ -115,7 +115,7 @@ namespace XaBikeStand.ViewModels
             //Just testing
             updatedUser.UserName = "Mathias";
             updatedUser.Email = "Mathias@Test.dk";
-            updatedUser.Psw = "Test";
+            updatedUser.Password = "Test";
         
 
             if (EnableSaveButton == false)
@@ -128,7 +128,7 @@ namespace XaBikeStand.ViewModels
         public Command SaveInfoCMD => new Command(async () =>
         {
             updatedUser.UserName = AccountUserName;
-            updatedUser.Psw = AccountPassword;
+            updatedUser.Password = AccountPassword;
             updatedUser.Email = AccountEmail;
 
 

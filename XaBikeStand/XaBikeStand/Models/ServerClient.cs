@@ -14,19 +14,48 @@ namespace XaBikeStand.Models
         private const String azure = "https://bikerack.azurewebsites.net/";
         private const String standardAddress = azure;
 
-        private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIiLCJpYXQiOjE1ODQ0NjYzNzAsImV4cCI6MTU4NDU1Mjc3MH0.HmxXqRGl4ZgiRydIsihHWuNE6l8pg_iEC5nm48RLuJw";
+        private SingletonSharedData sharedData;
+
         public ServerClient()
         {
-
+            sharedData = SingletonSharedData.GetInstance();
         }
 
-        public ObservableCollection<BikeStation> GetBikeStations()
+        public User Login(String username, String password)
+        {
+            String responseFromServer = "";
+
+            String target = standardAddress + "users/login";
+
+            String jsonData = "{\"userName\": \"" + username + "\", \"psw\": \"" + password + "\" }";
+
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                using (StreamWriter streamWriter = new StreamWriter(requestStream))
+                {
+                    streamWriter.Write(jsonData);
+                }
+
+
+            }
+            responseFromServer = GetResponse(request);
+            Console.WriteLine("response " + responseFromServer);
+            User foundUser = JsonConvert.DeserializeObject<User>(responseFromServer);
+            return foundUser;
+        }
+
+            public ObservableCollection<BikeStation> GetBikeStations()
         {
             String responseFromServer = "";
             WebRequest request = WebRequest.Create(standardAddress + "bikestations");
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
 
 
             responseFromServer = GetResponse(request);
@@ -87,7 +116,7 @@ namespace XaBikeStand.Models
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -111,7 +140,7 @@ namespace XaBikeStand.Models
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
 
             using (Stream requestStream = request.GetRequestStream())
             {
@@ -133,7 +162,7 @@ namespace XaBikeStand.Models
             WebRequest request = WebRequest.Create(target);
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
 
 
             response = GetResponse(request);

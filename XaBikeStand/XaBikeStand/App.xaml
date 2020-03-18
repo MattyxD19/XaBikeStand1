@@ -6,6 +6,20 @@
              mc:Ignorable="d"
              x:Class="XaBikeStand.App">
     <Application.Resources>
+        <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+            <Setter Property="BackgroundColor" Value="#2f4259"></Setter>
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="#66e6d9" />
+            <Setter Property="TextColor" Value="#66e6d9" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#66e6d9" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#66e6d9" />
+            <Setter Property="TextColor" Value="White" />
 
+        </Style>
     </Application.Resources>
 </Application>
