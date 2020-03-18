@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using XaBikeStand.Models;
+using XaBikeStand.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -22,22 +23,12 @@ namespace XaBikeStand.Views
         public MapView()
         {
             InitializeComponent();
-            //Mapcontent();
-            //Content = AppMap;
+            
         }
 
-        //Map AppMap = new Map
-        //{
-        //    IsShowingUser = true,
-            
-            
-        //};
-
-        //public void Mapcontent()
-        //{
-        //    Position position = new Position(54.912794, 9.779231);
-        //    MapSpan startSpan = new MapSpan(position, 0.01, 0.01);
-        //    AppMap.MoveToRegion(startSpan);
-        //}
+        private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            ((MapViewModel)this.BindingContext).OnPinClicked();
+        }
     }
 }

@@ -16,7 +16,8 @@
                         <maps:Pin Position="{Binding Position}"
                               Address="{Binding Address}"
                               Label="{Binding Label}"
-                                  Type="{Binding Type}"/>
+                              Type="{Binding Type}"
+                                  />
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
                 <!--<maps:Map.Behaviors>
