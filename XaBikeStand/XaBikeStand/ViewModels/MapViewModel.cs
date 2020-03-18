@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using XaBikeStand.Models;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -13,131 +14,80 @@ namespace XaBikeStand.ViewModels
 {
     class MapViewModel : BaseViewModel, INotifyPropertyChanged
     {
-
-        BikeStation bikeStation = new BikeStation();
-        ServerClient serverClient = new ServerClient();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public List<Pin> Locations { get; set; }
-
         public MapViewModel()
         {
-            Locations = new List<Pin>();
-
-            //_Pin. = "bikeStation.Address";
-            //_Pin.Address = "Cykler fri: " + "bikeStation.Bikes";
-            //_Pin.Type = PinType.Place;
-            //_Pin.Position = new Position(54.913197, 9.778213);
-
-            //Locations.Add(_Pin);
-
-            //pinCollection.Add(new Pin { Label = "bikeStation.Address", 
-            //                            Address = "Cykler fri: " + "bikeStation.Bikes", 
-            //                            Type = PinType.Place, 
-            //                            Position = new Position(54.913197, 9.778213) });
-
-            //AddPins();
+            //GetPins();
+            PinClicked = new Command(OnPinClicked);
         }
 
+        
+        public ICommand PinClicked { get; protected set; }
 
+        private Pin _pin;
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        ServerClient serverClient = new ServerClient();
+        public ObservableCollection<BikeStation> bikeStations = new ObservableCollection<BikeStation>();
 
 
         #region --Binding--
-        private ObservableCollection<Pin> _Pins = new ObservableCollection<Pin>();
-        public ObservableCollection<Pin> Pins
+
+        public ObservableCollection<Pin> Pins { get; set; }
+
+        public Pin Pin
         {
-            get { return _Pins; }
-            set
-            {
-                _Pins = value;
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("Monkeys"));
-                }
-            }
+            get  => _pin; 
+            set  => _pin = value; 
         }
-
-
-
-        private Position _Position;
-
-        public Position Position
-        {
-            get { return _Position; }
-            set { _Position = value; OnPropertyChanged(); }
-        }
-
-        private string _Address;
-
-        public string Address
-        {
-            get { return _Address; }
-            set { _Address = value; OnPropertyChanged(); }
-        }
-
-        private string _Label;
-
-        public string Label
-        {
-            get { return _Label; }
-            set { _Label = value; OnPropertyChanged(); }
-        }
-
         #endregion
 
-        private void GetBikeStations()
-        {
-            //serverClient.
-
-            //pinCollection.Add(new Pin { Label = bikeStation.Address, Address = "Cykler fri: " + bikeStation.Bikes, Type = PinType.Place, Position = new Position(bikeStation.Longitude, bikeStation.Latitude) });
-
-        }
-
-        public void PinClicked(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PinInfo(object sender, EventArgs e)
-        {
-            //menu = new PopUpMenu(this, show)
-        }
+        
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void LoadPins()
+
+        private void GetPins()
         {
-            Pins.Add(new Pin
+            var getStations = serverClient.GetBikeStations();
+            int count = 0;
+            foreach (var station in getStations)
             {
-                Label = "bikeStation.Address",
-                Address = "Cykler fri: " + "bikeStation.Bikes",
-                Type = PinType.Place,
-                Position = new Position(54.913197, 9.778213)
-            });
+                bikeStations.Add(station);
+                count++;
+                Console.WriteLine("Stations: " + count);
+            }
+
+            foreach (var item in bikeStations)
+            {
+                Console.WriteLine("Latitude: " + item.latitude);
+                Console.WriteLine("Longitude: " + item.longtitude);
+                Pin pin = new Pin
+                {
+                    Label = "ID: " + item.bikeStationID,
+                    Address = item.title,
+                    Type = PinType.Place,
+                    Position = new Position(item.latitude, item.longtitude),
+                   
+                };
+
+                //Pins.Add(pin);
+                
+                //_Pins.MarkerClicked += async (sender, args) => {
+                //    var availablespots = serverClient.GetAvailability(_Pins.Label);
+                //    await DisplayAlert("Pladser ved: " + _Pins.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
+                //};
+
+            }
         }
 
-            //private void AddPins()
-            //{
-            //    _Locations.Label = "bikeStation.Address";
-            //    _Locations.Address = "Cykler fri: " + "bikeStation.Bikes";
-            //    _Locations.Type = PinType.Place;
-            //    _Locations.Position = new Position(54.913197, 9.778213);
-
-            //    pinCollection.Add(_Locations);
-
-            //    _Locations.Label = "bikeStation.Address";
-            //    _Locations.Address = "Cykler fri: " + "bikeStation.Bikes";
-            //    _Locations.Type = PinType.Place;
-            //    _Locations.Position = new Position(54.919999, 9.807773);
-
-            //    pinCollection.Add(_Locations);
-            //}
-
+        private void OnPinClicked(object pin)
+        {
+            Console.WriteLine("Pin clicked: " + _pin.Label);
         }
+
+    }
 }

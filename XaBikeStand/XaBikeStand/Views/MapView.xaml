@@ -2,13 +2,33 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.MapView">
     <ContentPage.Content>
         <StackLayout>
-            <maps:Map x:Name="AppMap"
-                  ItemsSource="{Binding Locations}">
+
+
+            <maps:Map x:Name="AppMapp">
+                <maps:Map.Behaviors>
+                    <CustomBehavior:MapBehavior ItemsSource="{Binding Pins}">
+                    </CustomBehavior:MapBehavior>
+                    <CustomBehavior:EventToCommandBehavior
+                        EventName="MarkerClicked"
+                        Command="{Binding PinClicked}"
+                        >
+                        
+                    </CustomBehavior:EventToCommandBehavior>
+                </maps:Map.Behaviors>
+                
+            </maps:Map>
+            
+            
+            <!--<maps:Map 
+                x:Name="AppMap"
+                ItemsSource="{Binding PinCollection}"
+                >
                 <maps:Map.ItemTemplate>
                     <DataTemplate>
                         <maps:Pin 
@@ -17,7 +37,7 @@
                             Label="{Binding Label}" />
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
-            </maps:Map>
+            </maps:Map>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
