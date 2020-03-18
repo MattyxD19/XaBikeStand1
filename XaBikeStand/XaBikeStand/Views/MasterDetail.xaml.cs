@@ -18,7 +18,7 @@ namespace XaBikeStand.Views
 		public MasterDetail ()
 		{
 			InitializeComponent();
-            profileImage.Source = ImageSource.FromFile("spider.jpg");
+            //profileImage.Source = ImageSource.FromFile("spider.jpg");
 
             navigationList.ItemsSource = GetMenuList();
 

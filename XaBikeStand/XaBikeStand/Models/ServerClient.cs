@@ -138,7 +138,6 @@ namespace XaBikeStand.Models
 
             response = GetResponse(request);
 
-
             return JsonConvert.DeserializeObject<Availability>(response);
 
         }

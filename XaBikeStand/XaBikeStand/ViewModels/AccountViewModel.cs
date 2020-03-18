@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
@@ -11,55 +13,47 @@ namespace XaBikeStand.ViewModels
 {
     class AccountViewModel : BaseViewModel, INotifyPropertyChanged
     {
-
-        /**
-         * A user should follow from the login page
-         */
-
-        //public AccountViewModel(User user)
-        //{
-        //    user.userName = _AccountUserName;
-        //    user.psw = _AccountPassword;
-        //    user.email = _AccountEmail;
-        //}
+        private User updatedUser;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #region --Bindings--
 
         private bool _VisiblePassword;
 
         public bool VisiblePassword
         {
-            get 
+            get
             {
-                return _VisiblePassword; 
+                return _VisiblePassword;
             }
-            set 
-            { 
-               _VisiblePassword = value;
-               OnPropertyChanged();
+            set
+            {
+                _VisiblePassword = value;
+                OnPropertyChanged();
             }
-            
-        }
 
-        
+        }
 
         private bool _EnableSaveButton;
 
         public bool EnableSaveButton
         {
-            get 
-            { 
-                return _EnableSaveButton; 
+            get
+            {
+                return _EnableSaveButton;
             }
-            set 
-            { 
+            set
+            {
                 _EnableSaveButton = value;
                 OnPropertyChanged();
             }
         }
 
+        #endregion
 
 
+        #region --User properties--
 
         private string _AccountUserName;
 
@@ -75,7 +69,7 @@ namespace XaBikeStand.ViewModels
                 _AccountUserName = value;
 
                 OnPropertyChanged();
-       
+
             }
         }
 
@@ -114,15 +108,14 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-     
-       
+        #endregion
 
         public Command ChangeInfoCMD => new Command(async () =>
         {
             //Just testing
-            AccountUserName = "Mathias";
-            AccountEmail = "Mathias@Test.dk";
-            AccountPassword = "Test";
+            updatedUser.UserName = "Mathias";
+            updatedUser.Email = "Mathias@Test.dk";
+            updatedUser.Psw = "Test";
         
 
             if (EnableSaveButton == false)
@@ -134,21 +127,19 @@ namespace XaBikeStand.ViewModels
 
         public Command SaveInfoCMD => new Command(async () =>
         {
-            _AccountUserName = AccountUserName;
-            _AccountPassword = AccountPassword;
-            _AccountEmail = AccountEmail;
+            updatedUser.UserName = AccountUserName;
+            updatedUser.Psw = AccountPassword;
+            updatedUser.Email = AccountEmail;
 
-            //Testing
-            Console.WriteLine(AccountUserName);
-            Console.WriteLine(AccountEmail);
-            Console.WriteLine(AccountPassword);
-            Console.WriteLine("Save info CMD works!");
 
             if (EnableSaveButton == true)
             {
                 EnableSaveButton = false;
                 VisiblePassword = true;
             }
+
+            //UpdateUser();
+
         });
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -161,15 +152,17 @@ namespace XaBikeStand.ViewModels
          * The updated user should be sent to the database
          * the method should be called from the SaveInfoCMD
          * when done
-         */
+         *
 
-        //private void UpdateUser(User user)
-        //{
+        private void UpdateUser()
+        {
+            //Backend 
+            //var uriDB = "";
+            //var updateContent = JsonConvert.SerializeObject(updatedUser);
+            //var response = await client.PutAsync(uriDB, updateContent);
             
-        //    user.userName = _AccountUserName;
-        //    user.psw = _AccountPassword;
-        //    user.email = _AccountEmail;
-        //}
+        }
+        */
 
     }
 }

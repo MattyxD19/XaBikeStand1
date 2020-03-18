@@ -125,6 +125,7 @@ namespace XaBikeStand.Services
             }*/
 
             await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
+            
         }
 
         private Type GetPageTypeForViewModel(Type viewModelType)
@@ -143,7 +144,6 @@ namespace XaBikeStand.Services
             {
                 throw new Exception($"Cannot locate page type for {viewModelType}");
             }
-
             Page page = Activator.CreateInstance(pageType) as Page;
             return page;
         }
