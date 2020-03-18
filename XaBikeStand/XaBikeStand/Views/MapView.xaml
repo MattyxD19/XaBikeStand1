@@ -10,17 +10,23 @@
         <StackLayout>
 
 
-            <maps:Map x:Name="AppMapp">
-                <maps:Map.Behaviors>
-                    <CustomBehavior:MapBehavior ItemsSource="{Binding Pins}">
-                    </CustomBehavior:MapBehavior>
+            <maps:Map x:Name="AppMapp" ItemsSource="{Binding Pins}">
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin Position="{Binding Position}"
+                              Address="{Binding Address}"
+                              Label="{Binding Label}"
+                                  Type="{Binding Type}"/>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+                <!--<maps:Map.Behaviors>
                     <CustomBehavior:EventToCommandBehavior
                         EventName="MarkerClicked"
                         Command="{Binding PinClicked}"
                         >
                         
                     </CustomBehavior:EventToCommandBehavior>
-                </maps:Map.Behaviors>
+                </maps:Map.Behaviors>-->
                 
             </maps:Map>
             
@@ -38,6 +44,7 @@
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
             </maps:Map>-->
+            <Button Text="test" Command="{Binding TestCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

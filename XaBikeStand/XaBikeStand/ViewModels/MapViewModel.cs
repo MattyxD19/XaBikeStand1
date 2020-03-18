@@ -16,12 +16,18 @@ namespace XaBikeStand.ViewModels
     {
         public MapViewModel()
         {
-            //GetPins();
+           
             PinClicked = new Command(OnPinClicked);
+            TestCommand = new Command(GetPins);
         }
 
         
         public ICommand PinClicked { get; protected set; }
+
+
+        public ICommand TestCommand { get; protected set; }
+
+
 
         private Pin _pin;
 
@@ -33,7 +39,13 @@ namespace XaBikeStand.ViewModels
 
         #region --Binding--
 
-        public ObservableCollection<Pin> Pins { get; set; }
+        private ObservableCollection<Pin> pins { get; set; }
+
+
+        public ObservableCollection<Pin> Pins {
+            get { return pins; }
+            set { pins = value; OnPropertyChanged(); }
+        }
 
         public Pin Pin
         {
@@ -52,14 +64,9 @@ namespace XaBikeStand.ViewModels
 
         private void GetPins()
         {
-            var getStations = serverClient.GetBikeStations();
-            int count = 0;
-            foreach (var station in getStations)
-            {
-                bikeStations.Add(station);
-                count++;
-                Console.WriteLine("Stations: " + count);
-            }
+            Pins = new ObservableCollection<Pin>();
+            var bikeStations = serverClient.GetBikeStations();
+           
 
             foreach (var item in bikeStations)
             {
@@ -67,15 +74,16 @@ namespace XaBikeStand.ViewModels
                 Console.WriteLine("Longitude: " + item.longtitude);
                 Pin pin = new Pin
                 {
+                   
                     Label = "ID: " + item.bikeStationID,
                     Address = item.title,
                     Type = PinType.Place,
                     Position = new Position(item.latitude, item.longtitude),
                    
                 };
+                Console.WriteLine("test this " +  item.bikeStationID);
+                Pins.Add(pin);
 
-                //Pins.Add(pin);
-                
                 //_Pins.MarkerClicked += async (sender, args) => {
                 //    var availablespots = serverClient.GetAvailability(_Pins.Label);
                 //    await DisplayAlert("Pladser ved: " + _Pins.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
