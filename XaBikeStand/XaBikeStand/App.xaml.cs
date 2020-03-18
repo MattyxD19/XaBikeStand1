@@ -21,12 +21,14 @@ namespace XaBikeStand
             ServiceContainer.Register<ISettingsService>(() => new SettingsService());
             _settingsService = ServiceContainer.Resolve<ISettingsService>();
             ServiceContainer.Register<INavigationService>(() => new NavigationService(_settingsService));
-
+            ServiceContainer.Register<LoginViewModel>(() => new LoginViewModel());
+            ServiceContainer.Register<RegistrationViewModel>(() => new RegistrationViewModel());
             ServiceContainer.Register<ActionsViewModel>(() => new ActionsViewModel());
             ServiceContainer.Register<MapViewModel>(() => new MapViewModel());
             ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
             ServiceContainer.Register<InfoViewModel>(() => new InfoViewModel());
             ServiceContainer.Register<AboutUsViewModel>(() => new AboutUsViewModel());
+            
 
 
             var masterDetailViewModel = new MasterDetailViewModel();

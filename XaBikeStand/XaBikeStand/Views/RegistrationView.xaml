@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="XaBikeStand.Views.RegistrationView" BackgroundColor="#2f4259"
+             xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
+             baseViewModel:ViewModelLocator.AutoWireViewModel="true"
+             xmlns:local="clr-namespace:XaBikeStand.ViewModels">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout  Padding="40" Spacing="10">
+
+                <Grid Margin ="20,0,20,0" VerticalOptions="CenterAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Row="0">
+                        <Image Source="BikeRack.png" />
+                        <Label Text="Create a New Account" TextColor="White" FontSize="22" x:Name="LabelTxt" HorizontalOptions="Center" 
+                               VerticalOptions="Center" Margin="0,20,0,0" />
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="1">
+                        <Entry Placeholder="Username" FontSize="16" x:Name="UserName" TextColor="#66e6d9" PlaceholderColor="#66e6d9" />
+                        <Entry Placeholder="Password" FontSize="16" x:Name="Password" TextColor="#66e6d9" PlaceholderColor="#66e6d9"/>
+                        <Entry Placeholder="Email" FontSize="16" x:Name="Email" TextColor="#66e6d9" PlaceholderColor="#66e6d9"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="2"  >
+                        <Button Margin="40" Text="Sign up" HorizontalOptions="CenterAndExpand" TextColor="White" BackgroundColor="#66e6d9" WidthRequest="200" Clicked="Handle_Clicked"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Row="3">
+                        <Label Text="I have an account" VerticalOptions="Center"
+                           HorizontalOptions="Center" 
+                           TextColor="#66e6d9"/>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+
+
+
+    </ContentPage.Content>
+
+
+
+</ContentPage>
