@@ -18,7 +18,7 @@ namespace XaBikeStand.ViewModels
         {
            
             PinClicked = new Command(OnPinClicked);
-            TestCommand = new Command(GetPins);
+            GetPins();
         }
 
         
@@ -81,7 +81,6 @@ namespace XaBikeStand.ViewModels
                     Position = new Position(item.latitude, item.longtitude),
                    
                 };
-                Console.WriteLine("test this " +  item.bikeStationID);
                 Pins.Add(pin);
 
                 //_Pins.MarkerClicked += async (sender, args) => {
