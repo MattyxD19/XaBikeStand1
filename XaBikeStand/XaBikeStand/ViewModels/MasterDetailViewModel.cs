@@ -38,6 +38,7 @@ namespace XaBikeStand.ViewModels
         public ICommand ChangeVMCMD => new Command<MasterMenuItems>(async (MasterMenuItems mmi) => {
 
             await NavigationService.NavigateToAsync(mmi.TargetViewModel);
+
         });
     }
 }
