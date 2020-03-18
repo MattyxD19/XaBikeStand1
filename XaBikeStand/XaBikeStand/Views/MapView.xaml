@@ -44,7 +44,6 @@
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
             </maps:Map>-->
-            <Button Text="test" Command="{Binding TestCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
