@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="XaBikeStand.Views.RegistrationView" BackgroundColor="#2f4259"
+             x:Class="XaBikeStand.Views.RegistrationView"
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              xmlns:local="clr-namespace:XaBikeStand.ViewModels">
@@ -23,24 +23,22 @@
 
                     <StackLayout Grid.Row="0">
                         <Image Source="BikeRack.png" />
-                        <Label Text="Create a New Account" TextColor="White" FontSize="22" x:Name="LabelTxt" HorizontalOptions="Center" 
+                        <Label Text="Create a New Account"  FontSize="22" x:Name="LabelTxt" HorizontalOptions="Center" 
                                VerticalOptions="Center" Margin="0,20,0,0" />
                     </StackLayout>
 
                     <StackLayout Grid.Row="1">
-                        <Entry Placeholder="Username" FontSize="16" x:Name="UserName" TextColor="#66e6d9" PlaceholderColor="#66e6d9" />
-                        <Entry Placeholder="Password" FontSize="16" x:Name="Password" TextColor="#66e6d9" PlaceholderColor="#66e6d9"/>
-                        <Entry Placeholder="Email" FontSize="16" x:Name="Email" TextColor="#66e6d9" PlaceholderColor="#66e6d9"/>
+                        <Entry Placeholder="Username" FontSize="16" x:Name="UserName"  />
+                        <Entry Placeholder="Password" FontSize="16" x:Name="Password" />
+                        <Entry Placeholder="Email" FontSize="16" x:Name="Email" />
                     </StackLayout>
 
                     <StackLayout Grid.Row="2"  >
-                        <Button Margin="40" Text="Sign up" HorizontalOptions="CenterAndExpand" TextColor="White" BackgroundColor="#66e6d9" WidthRequest="200" Clicked="Handle_Clicked"/>
+                        <Button Margin="40" Text="Sign up" HorizontalOptions="CenterAndExpand" TextColor="White"  WidthRequest="200" Clicked="Handle_Clicked"/>
                     </StackLayout>
 
                     <StackLayout Grid.Row="3">
-                        <Label Text="I have an account" VerticalOptions="Center"
-                           HorizontalOptions="Center" 
-                           TextColor="#66e6d9"/>
+                        <Label Text="I have an account" VerticalOptions="Center" HorizontalOptions="Center" />
                     </StackLayout>
                 </Grid>
             </StackLayout>

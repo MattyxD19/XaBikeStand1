@@ -5,6 +5,7 @@
              xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.ActionsView">
+  
     <ContentPage.Content>
         <StackLayout>
             <Grid>
@@ -42,7 +43,6 @@
                     HorizontalOptions="CenterAndExpand"
                     Text="Tilføj en ven som kan låne din cykel"
                     FontSize="Large"
-                    TextColor="Black"
                     Grid.Row="5"/>
 
                 <Entry
