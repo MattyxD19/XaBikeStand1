@@ -43,9 +43,16 @@ namespace XaBikeStand.Models
 
 
             }
-            responseFromServer = GetResponse(request);
-            Console.WriteLine("response " + responseFromServer);
-            User foundUser = JsonConvert.DeserializeObject<User>(responseFromServer);
+            User foundUser = null;
+            try
+            {
+                responseFromServer = GetResponse(request);
+                Console.WriteLine("response " + responseFromServer);
+                foundUser = JsonConvert.DeserializeObject<User>(responseFromServer);
+            } catch(System.Net.WebException)
+            {
+            }
+        
             return foundUser;
         }
 

@@ -32,7 +32,7 @@
 
                     <StackLayout Grid.Row="1" Padding="10,40,10,40">
                         <Entry Placeholder="UserName" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" />
-                        <Entry Placeholder="Password"   FontSize="16" x:Name="EntryPassword" Text="{Binding Password}"  >
+                        <Entry Placeholder="Password"   FontSize="16"  x:Name="EntryPassword" Text="{Binding Password}"  >
                             <Entry.Behaviors>
                                 <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
                             </Entry.Behaviors>
@@ -43,7 +43,11 @@
                     </StackLayout>
 
                     <StackLayout Grid.Row="2">
-                        <Label Text="I don't have an account yet" VerticalOptions="Center" HorizontalOptions="Center" />
+                        <Label Text="I don't have an account yet" VerticalOptions="Center" HorizontalOptions="Center" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding GoToRegisterPageCommand}" ></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </StackLayout>
                 </Grid>
             </StackLayout>
