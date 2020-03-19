@@ -1,34 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
 {
-    public abstract class ExtendedBindableObject : BindableObject
+    public abstract class ExtendedBindableObject : INotifyPropertyChanged
     {
-        public void RaisePropertyChanged<T>(Expression<Func<T>> property)
-        {
-            var name = GetMemberInfo(property).Name;
-            OnPropertyChanged(name);
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private MemberInfo GetMemberInfo(Expression expression)
+
+        protected void propertyIsChanged([CallerMemberName] string memberName = "")
         {
-            MemberExpression operand;
-            LambdaExpression lambdaExpression = (LambdaExpression)expression;
-            if (lambdaExpression.Body as UnaryExpression != null)
-            {
-                UnaryExpression body = (UnaryExpression)lambdaExpression.Body;
-                operand = (MemberExpression)body.Operand;
-            }
-            else
-            {
-                operand = (MemberExpression)lambdaExpression.Body;
-            }
-            return operand.Member;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(memberName));
         }
     }
 }
