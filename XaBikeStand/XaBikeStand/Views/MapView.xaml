@@ -45,6 +45,7 @@
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
             </maps:Map>-->
+            <Button Text="Opdater" Command="{Binding UpdateCMD}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

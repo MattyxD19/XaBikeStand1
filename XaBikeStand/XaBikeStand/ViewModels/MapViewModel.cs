@@ -18,16 +18,10 @@ namespace XaBikeStand.ViewModels
         {
 
             PinClicked = new Command(OnPinClicked);
-            GetPins();
         }
 
-       
+
         public ICommand PinClicked { get; protected set; }
-
-
-        public ICommand TestCommand { get; protected set; }
-
-
 
         private Pin _pin;
 
@@ -62,7 +56,11 @@ namespace XaBikeStand.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+        public Command UpdateCMD => new Command( async =>
+        {
+            GetPins();
+        });
+
         private void GetPins()
         {
             Pins = new ObservableCollection<Pin>();
@@ -86,7 +84,7 @@ namespace XaBikeStand.ViewModels
 
             }
         }
-
+        
 
         Page page = new Page();
         public void OnPinClicked()
