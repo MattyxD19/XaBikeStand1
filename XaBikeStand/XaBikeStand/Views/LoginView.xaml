@@ -4,11 +4,16 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="XaBikeStand.Views.LoginView" BackgroundColor="#2f4259"
+             x:Class="XaBikeStand.Views.LoginView" 
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
-             xmlns:local="clr-namespace:XaBikeStand.ViewModels">
+             NavigationPage.HasNavigationBar="false"
+                         
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
 
+             xmlns:local="clr-namespace:XaBikeStand.ViewModels">
+  
+    
     <ContentPage.Content>
         
         <ScrollView>
@@ -26,18 +31,19 @@
                     </StackLayout>
 
                     <StackLayout Grid.Row="1" Padding="10,40,10,40">
-                        <Entry Placeholder="UserName"  FontSize="16"  x:Name="EntryUser" TextColor="#66e6d9" PlaceholderColor="#66e6d9"/>
-                        <Entry Placeholder="Password"  FontSize="16"  x:Name="EntryPassword" TextColor="#66e6d9" PlaceholderColor="#66e6d9" />
-                    
+                        <Entry Placeholder="UserName" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" />
+                        <Entry Placeholder="Password"   FontSize="16" x:Name="EntryPassword" Text="{Binding Password}"  >
+                            <Entry.Behaviors>
+                                <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
 
-                        <Button Text="Login" Margin="40" TextColor="White" BackgroundColor="#66e6d9" 
-                                HorizontalOptions="CenterAndExpand" WidthRequest="200"  Command="{Binding ChangeVMCMD}"/>
+
+                        <Button Text="Login" Margin="40"  HorizontalOptions="CenterAndExpand" WidthRequest="200"  Command="{Binding LoginCommand}"/>
                     </StackLayout>
 
                     <StackLayout Grid.Row="2">
-                        <Label Text="I don't have an account yet" VerticalOptions="Center"
-                               HorizontalOptions="Center" 
-                               TextColor="#66e6d9"/>
+                        <Label Text="I don't have an account yet" VerticalOptions="Center" HorizontalOptions="Center" />
                     </StackLayout>
                 </Grid>
             </StackLayout>

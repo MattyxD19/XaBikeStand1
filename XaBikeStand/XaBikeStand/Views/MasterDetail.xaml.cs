@@ -12,12 +12,12 @@ using System.Reflection;
 
 namespace XaBikeStand.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MasterDetail : MasterDetailPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MasterDetail : MasterDetailPage
     {
-		public MasterDetail ()
-		{
-			InitializeComponent();
+        public MasterDetail()
+        {
+            InitializeComponent();
             //profileImage.Source = ImageSource.FromFile("spider.jpg");
 
             navigationList.ItemsSource = GetMenuList();
@@ -29,40 +29,43 @@ namespace XaBikeStand.Views
         {
             var list = new List<MasterMenuItems>();
 
-            list.Add(new MasterMenuItems() { 
+            list.Add(new MasterMenuItems()
+            {
                 Text = "Cykelsiden",
-                Detail = "Hent, lås eller del din cykel med en ven",
+                ImagePath = "BikeLogo.png",
                 TargetViewModel = typeof(ActionsViewModel)
             });
 
             list.Add(new MasterMenuItems()
             {
                 Text = "Kort",
-                Detail = "Se et kort over mulige standere",
+                ImagePath = "MapLogo.png",
                 TargetViewModel = typeof(MapViewModel)
-            }) ;
+            });
+
+            //list.Add(new MasterMenuItems()
+            //{
+            //    Text = "Om os",
+            //    ImagePath = "MapLogo.png",
+            //    TargetViewModel = typeof(AboutUsViewModel)
+            //});
+
+            //list.Add(new MasterMenuItems
+            //{
+            //    Text = "Info",
+            //    ImagePath = "MapLogo.png",
+            //    TargetViewModel = typeof(InfoViewModel)
+            //});
+
+
 
             list.Add(new MasterMenuItems()
             {
-                Text = "Om os",
-                Detail = "",
-                TargetViewModel = typeof(AboutUsViewModel)
-            });
-
-            list.Add(new MasterMenuItems
-            {
-                Text = "Info",
-                Detail = "Information",
-                TargetViewModel = typeof(InfoViewModel)
-            });
-
-            list.Add(new MasterMenuItems() 
-            { 
                 Text = "Konto",
-                Detail = "Konto information",
+                ImagePath = "AccountLogo.png",
                 TargetViewModel = typeof(AccountViewModel)
             });
-            
+
             return list;
         }
 
