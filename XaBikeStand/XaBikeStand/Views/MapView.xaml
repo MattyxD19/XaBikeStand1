@@ -8,8 +8,6 @@
              x:Class="XaBikeStand.Views.MapView">
     <ContentPage.Content>
         <StackLayout>
-
-
             <maps:Map x:Name="AppMapp" ItemsSource="{Binding Pins}">
                 <maps:Map.ItemTemplate>
                     <DataTemplate>
@@ -17,35 +15,25 @@
                               Address="{Binding Address}"
                               Label="{Binding Label}"
                               Type="{Binding Type}"
+                              MarkerClicked="Pin_MarkerClicked"
                                   />
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
-                <!--<maps:Map.Behaviors>
-                    <CustomBehavior:EventToCommandBehavior
-                        EventName="MarkerClicked"
-                        Command="{Binding PinClicked}"
-                        >
-                        
-                    </CustomBehavior:EventToCommandBehavior>
-                </maps:Map.Behaviors>-->
-                
+                <x:Arguments>
+                    <maps:MapSpan>
+                        <x:Arguments>
+                            <maps:Position>
+                                <x:Arguments>
+                                    <x:Double>54.908499</x:Double>
+                                    <x:Double>9.788768</x:Double>
+                                </x:Arguments>
+                            </maps:Position>
+                            <x:Double>0.01</x:Double>
+                            <x:Double>0.01</x:Double>
+                        </x:Arguments>
+                    </maps:MapSpan>
+                </x:Arguments>
             </maps:Map>
-            
-            
-            <!--<maps:Map 
-                x:Name="AppMap"
-                ItemsSource="{Binding PinCollection}"
-                >
-                <maps:Map.ItemTemplate>
-                    <DataTemplate>
-                        <maps:Pin 
-                            Position="{Binding Position}"
-                            Address="{Binding Address}"
-                            Label="{Binding Label}" />
-                    </DataTemplate>
-                </maps:Map.ItemTemplate>
-            </maps:Map>-->
-            <Button Text="Opdater" Command="{Binding UpdateCMD}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

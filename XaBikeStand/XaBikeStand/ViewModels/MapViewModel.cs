@@ -16,12 +16,8 @@ namespace XaBikeStand.ViewModels
     {
         public MapViewModel()
         {
-
-            PinClicked = new Command(OnPinClicked);
+            GetPins();
         }
-
-
-        public ICommand PinClicked { get; protected set; }
 
         private Pin _pin;
 
@@ -30,11 +26,9 @@ namespace XaBikeStand.ViewModels
         ServerClient serverClient = new ServerClient();
         public ObservableCollection<BikeStation> bikeStations = new ObservableCollection<BikeStation>();
 
-
         #region --Binding--
 
         private ObservableCollection<Pin> pins { get; set; }
-
 
         public ObservableCollection<Pin> Pins
         {
@@ -49,52 +43,34 @@ namespace XaBikeStand.ViewModels
         }
         #endregion
 
-
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public Command UpdateCMD => new Command( async =>
-        {
-            GetPins();
-        });
 
         private void GetPins()
         {
             Pins = new ObservableCollection<Pin>();
             var bikeStations = serverClient.GetBikeStations();
 
-
             foreach (var item in bikeStations)
             {
-                Console.WriteLine("Latitude: " + item.latitude);
-                Console.WriteLine("Longitude: " + item.longtitude);
                 Pin pin = new Pin
                 {
-
                     Label = "ID: " + item.bikeStationID,
                     Address = item.title,
                     Type = PinType.Place,
                     Position = new Position(item.latitude, item.longtitude),
-
                 };
                 Pins.Add(pin);
-
             }
         }
-        
 
-        Page page = new Page();
-        public void OnPinClicked()
+        public async void OnPinClicked(Pin tappedPin)
         {
-            Pin.MarkerClicked += async (sender, args) =>
-            {
+            var availablespots = serverClient.GetAvailability(tappedPin.Label);
+            await Application.Current.MainPage.DisplayAlert("Pladser ved: " + tappedPin.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
 
-                var availablespots = serverClient.GetAvailability(Pin.Label);
-                await page.DisplayAlert("Pladser ved: " + Pin.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
-            };
         }
     }
 }

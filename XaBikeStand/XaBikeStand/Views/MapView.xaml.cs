@@ -28,7 +28,8 @@ namespace XaBikeStand.Views
 
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
-            ((MapViewModel)this.BindingContext).OnPinClicked();
+            Pin selectedPin = (Pin)sender;
+            ((MapViewModel)this.BindingContext).OnPinClicked(selectedPin);
         }
     }
 }
