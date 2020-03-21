@@ -11,6 +11,8 @@ namespace XaBikeStand.Models
 
         public User LoggedInUser { get; set; }
 
+        public String ScannedBikestandID { get; set; }
+
 
         private SingletonSharedData()
         {

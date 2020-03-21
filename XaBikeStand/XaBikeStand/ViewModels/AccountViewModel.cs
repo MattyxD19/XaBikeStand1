@@ -11,11 +11,10 @@ using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
 {
-    class AccountViewModel : BaseViewModel, INotifyPropertyChanged
+    class AccountViewModel : BaseViewModel
     {
         private User updatedUser;
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #region --Bindings--
 
@@ -30,7 +29,7 @@ namespace XaBikeStand.ViewModels
             set
             {
                 _VisiblePassword = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
 
         }
@@ -46,9 +45,11 @@ namespace XaBikeStand.ViewModels
             set
             {
                 _EnableSaveButton = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
+
+   
 
         #endregion
 
@@ -68,7 +69,7 @@ namespace XaBikeStand.ViewModels
             {
                 _AccountUserName = value;
 
-                OnPropertyChanged();
+                propertyIsChanged();
 
             }
         }
@@ -86,7 +87,7 @@ namespace XaBikeStand.ViewModels
             {
                 _AccountPassword = value;
 
-                OnPropertyChanged();
+                propertyIsChanged();
 
             }
         }
@@ -103,7 +104,7 @@ namespace XaBikeStand.ViewModels
             {
                 _AccountEmail = value;
 
-                OnPropertyChanged();
+                propertyIsChanged();
 
             }
         }
@@ -113,9 +114,9 @@ namespace XaBikeStand.ViewModels
         public Command ChangeInfoCMD => new Command(async () =>
         {
             //Just testing
-            updatedUser.UserName = "Mathias";
-            updatedUser.Email = "Mathias@Test.dk";
-            updatedUser.Password = "Test";
+            updatedUser.userName = "Mathias";
+            updatedUser.email = "Mathias@Test.dk";
+            updatedUser.psw = "Test";
         
 
             if (EnableSaveButton == false)
@@ -127,9 +128,9 @@ namespace XaBikeStand.ViewModels
 
         public Command SaveInfoCMD => new Command(async () =>
         {
-            updatedUser.UserName = AccountUserName;
-            updatedUser.Password = AccountPassword;
-            updatedUser.Email = AccountEmail;
+            updatedUser.userName = AccountUserName;
+            updatedUser.psw = AccountPassword;
+            updatedUser.email = AccountEmail;
 
 
             if (EnableSaveButton == true)
@@ -142,10 +143,10 @@ namespace XaBikeStand.ViewModels
 
         });
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
+     
+
+
 
 
         /***

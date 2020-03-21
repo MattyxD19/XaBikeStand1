@@ -3,33 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
+             
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
-             x:Class="XaBikeStand.Views.ActionsView">
-  
+             x:Class="XaBikeStand.Views.ActionsView"
+             Appearing="ContentPage_Appearing">
+
+
+
     <ContentPage.Content>
+       
         <StackLayout>
             <Grid>
+                <Button x:Name="ScannerButton" Grid.Row="1" Text="Scan qr code" Command="{Binding NavigateScannerViewCommand}" IsEnabled="{Binding IsLockIDEnabled}"></Button>
                 <Entry
                     x:Name="BikeStandNumber"
                     Placeholder="Låsens nummer"
                     Text="{Binding LockID}"
                     Keyboard="Numeric"
-                    Grid.Row="2">
+                    Grid.Row="2"
+                    IsEnabled="{Binding IsLockIDEnabled}">
                     <Entry.Behaviors>
                         <CustomBehavior:EventToCommandBehavior 
-                            EventName="Unfocused" 
-                            Command="{Binding LockEntryUnfocused}" />
+                            EventName="Focused" 
+                            Command="{Binding LockIDFocusedCommand}" />
                     </Entry.Behaviors>
                 </Entry>
-
-
+                <Label x:Name="LockErrorLabel" Grid.Row="3" Text="The bikestand could not be locked, please check the bikestand id" TextColor="Red" IsVisible="{Binding IsLockErrorVisible}" ></Label>
+                <Label x:Name="UnlockErrorLabel" Grid.Row="3" Text="The bikestand could not be unlocked, plese try again" TextColor="Red" IsVisible="{Binding IsUnlockErrorVisible}" ></Label>
                 <Button 
                     x:Name="UnlockBike" 
                     Text="Unlock Bike" 
                     IsVisible="{Binding UnlockVisible}"
                     Command="{Binding UnlockCMD}"
                     CommandParameter="{Binding Source={x:Reference UnlockBike}}"
-                    Grid.Row="3"/>
+                    Grid.Row="4"/>
                 
                 <Button 
                     x:Name="LockBike" 
@@ -37,7 +44,7 @@
                     IsVisible="{Binding LockVisible}"
                     Command="{Binding LockCMD}" 
                     CommandParameter="{Binding Source={x:Reference LockBike}}"
-                    Grid.Row="3"/>
+                    Grid.Row="4"/>
 
                 <Label 
                     HorizontalOptions="CenterAndExpand"

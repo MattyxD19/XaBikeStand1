@@ -49,20 +49,21 @@ namespace XaBikeStand.Models
                 responseFromServer = GetResponse(request);
                 Console.WriteLine("response " + responseFromServer);
                 foundUser = JsonConvert.DeserializeObject<User>(responseFromServer);
-            } catch(System.Net.WebException)
+            }
+            catch (System.Net.WebException)
             {
             }
-        
+
             return foundUser;
         }
 
-            public ObservableCollection<BikeStation> GetBikeStations()
+        public ObservableCollection<BikeStation> GetBikeStations()
         {
             String responseFromServer = "";
             WebRequest request = WebRequest.Create(standardAddress + "bikestations");
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
 
             responseFromServer = GetResponse(request);
@@ -86,108 +87,138 @@ namespace XaBikeStand.Models
             }
         }
 
-        //public bool PostData(ISerializable serializable, String target)
-        //{
-        //    String statusCodeFromServer = "";
+        public ISerializable PostData(ISerializable serializable, String target)
+        {
+            String responseFromServer = "";
 
-        //    String jsonData = JsonConvert.SerializeObject(serializable);
-        //    target = standardAddress + target;
-        //    Console.WriteLine(jsonData);
-        //    WebRequest request = WebRequest.Create(target);
-        //    request.Method = "POST";
-        //    request.ContentType = "application/json";
+            String jsonData = JsonConvert.SerializeObject(serializable);
+            target = standardAddress + target;
+            Console.WriteLine(jsonData);
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "POST";
+            request.ContentType = "application/json";
 
-        //    using (Stream requestStream = request.GetRequestStream())
-        //    {
-        //        using (StreamWriter streamWriter = new StreamWriter(requestStream))
-        //        {
-        //            streamWriter.Write(jsonData);
-        //        }
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                using (StreamWriter streamWriter = new StreamWriter(requestStream))
+                {
+                    streamWriter.Write(jsonData);
+                }
 
-        //        statusCodeFromServer = GetStatusCode(request);
-        //        if (statusCodeFromServer.Equals("200"))
-        //        {
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //}
+                ISerializable foundSerializable = null;
+                try
+                {
+                    responseFromServer = GetResponse(request);
+                    Console.WriteLine("response " + responseFromServer);
+                    foundSerializable = JsonConvert.DeserializeObject<User>(responseFromServer);
+                }
+                catch (System.Net.WebException e)
+                {
+                }
+
+                return foundSerializable;
+            }
+        }
 
         public bool Lock(int bikestandID)
         {
-            String statusCodeFromServer = "";
+            String responseFromServer = "";
             String target = standardAddress + "lock/" + bikestandID;
-
 
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
             using (Stream requestStream = request.GetRequestStream())
             {
-                statusCodeFromServer = GetStatusCode(request);
 
-                if (statusCodeFromServer.Equals("OK"))
+                try
                 {
+                    responseFromServer = GetResponse(request);
                     return true;
                 }
+                catch (System.Net.WebException)
+                {
+                }
+
             }
             return false;
 
         }
 
         public bool Unlock()
-        {
-            String statusCodeFromServer = "";
-
-            String target = standardAddress + "unlock";
-
-            WebRequest request = WebRequest.Create(target);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
-
-            using (Stream requestStream = request.GetRequestStream())
             {
-                statusCodeFromServer = GetStatusCode(request);
-                if (statusCodeFromServer.Equals("OK"))
+                String responseFromServer = "";
+
+                String target = standardAddress + "unlock";
+
+                WebRequest request = WebRequest.Create(target);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+                using (Stream requestStream = request.GetRequestStream())
                 {
+
+                try
+                {
+                    responseFromServer = GetResponse(request);
                     return true;
                 }
-                return false;
+                catch (System.Net.WebException)
+                {
+                }
             }
+            return false;
         }
 
-        public Availability GetAvailability(String bikeStationID)
+            public Availability GetAvailability(String bikeStationID)
+            {
+                String response = "";
+
+                String target = standardAddress + "bikestations/GetAvailability/as";
+
+                WebRequest request = WebRequest.Create(target);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+
+                response = GetResponse(request);
+
+                return JsonConvert.DeserializeObject<Availability>(response);
+            }
+
+
+
+            private String GetStatusCode(WebRequest request)
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    return response.StatusCode.ToString();
+                }
+            }
+
+
+        public String GetLockedBikestand()
         {
             String response = "";
 
-            String target = standardAddress + "bikestations/GetAvailability/as";
+            String target = standardAddress + "bikestandRegistration/getLockedBikestand";
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "GET";
             request.ContentType = "application/json";
-            request.Headers.Add("x-access-token", sharedData.LoggedInUser.Token);
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
 
             response = GetResponse(request);
 
-            return JsonConvert.DeserializeObject<Availability>(response);
-
+            return response;
         }
-
-
-
-        private String GetStatusCode(WebRequest request)
-        {
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                return response.StatusCode.ToString();
-            }
         }
     }
-}
 
 

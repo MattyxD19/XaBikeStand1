@@ -4,12 +4,12 @@ using System.Text;
 
 namespace XaBikeStand.Models
 {
-    public class User
+    public class User : ISerializable
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public string userName { get; set; }
+        public string psw { get; set; }
+        public string email { get; set; }
 
-        public string Token { get; set; }
+        public string token { get; set; }
     }
 }

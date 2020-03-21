@@ -10,6 +10,7 @@ namespace XaBikeStand.Models
         public const String Unlock = "unlock";
         public const String BikeStations = "bikeStations";
 
+        public const String RegiserUser = "users/registeruser";
 
 
 

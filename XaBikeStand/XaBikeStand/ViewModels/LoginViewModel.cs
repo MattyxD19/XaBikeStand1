@@ -19,7 +19,16 @@ namespace XaBikeStand.ViewModels
         public ICommand LoginCommand { get; set; }
 
         public ICommand GoToRegisterPageCommand { get; set; }
+   
+        public ICommand OnEntryFocusedCommand { get; set; }
 
+        private bool isLoginErrorVisible;
+
+        public bool IsLoginErrorVisible
+        {
+            get { return isLoginErrorVisible; }
+            set { isLoginErrorVisible = value; propertyIsChanged(); }
+        }
 
         private String username;
 
@@ -35,19 +44,30 @@ namespace XaBikeStand.ViewModels
         public String Password
         {
             get { return password; }
-            set { password = value;  propertyIsChanged();}
+            set { password = value; propertyIsChanged(); }
         }
 
-        public LoginViewModel()
+        public LoginViewModel(string username)
         {
+            ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = false;
+            if (username != null)
+            {
+                Username = username;
+            }
             LoginCommand = new Command(Login);
             GoToRegisterPageCommand = new Command(GoToRegisterPage);
+            OnEntryFocusedCommand = new Command(OnEntryFocused);
             serverClient = new ServerClient();
             sharedData = SingletonSharedData.GetInstance();
 
         }
-        
-        private async void Login ()
+
+        private void OnEntryFocused ()
+        {
+            IsLoginErrorVisible = false;
+        }
+
+        private async void Login()
         {
             User user = serverClient.Login(username, password);
             if (user != null)
@@ -55,10 +75,11 @@ namespace XaBikeStand.ViewModels
                 sharedData.LoggedInUser = user;
                 ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = true;
                 await NavigationService.NavigateToAsync(typeof(ActionsViewModel));
-            } else
+            }
+            else
             {
+                IsLoginErrorVisible = true;
                 Password = "";
-             await Application.Current.MainPage.DisplayAlert("alert", "wrong", "cancel", "okay");
             }
         }
 

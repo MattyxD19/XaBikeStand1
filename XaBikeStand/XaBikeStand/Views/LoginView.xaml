@@ -31,13 +31,18 @@
                     </StackLayout>
 
                     <StackLayout Grid.Row="1" Padding="10,40,10,40">
-                        <Entry Placeholder="UserName" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" />
-                        <Entry Placeholder="Password"   FontSize="16"  x:Name="EntryPassword" Text="{Binding Password}"  >
+                        <Entry Placeholder="UserName" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" >
                             <Entry.Behaviors>
-                                <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
+                                <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
                             </Entry.Behaviors>
                         </Entry>
-
+                        <Entry Placeholder="Password"   FontSize="16" IsPassword="True"  x:Name="EntryPassword" Text="{Binding Password}"  >
+                            <Entry.Behaviors>
+                                <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
+                                <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label x:Name="loginErrorLabel" Text="Invalid username or password" TextColor="Red" IsVisible="{Binding IsLoginErrorVisible}"></Label>
 
                         <Button Text="Login" Margin="40"  HorizontalOptions="CenterAndExpand" WidthRequest="200"  Command="{Binding LoginCommand}"/>
                     </StackLayout>
