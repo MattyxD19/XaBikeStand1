@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using XaBikeStand.ViewModels;
 using XaBikeStand.Views;
 using XaBikeStand.Services;
+using XaBikeStand.Models;
 
 namespace XaBikeStand.Services
 {
@@ -123,9 +124,38 @@ namespace XaBikeStand.Services
                     Application.Current.MainPage = new CustomNavigationPage(page);
                 }
             }*/
+            if (viewModelType == typeof(LoginViewModel))
+            {
+                SingletonSharedData sharedData = SingletonSharedData.GetInstance();
+                if (sharedData.LoggedInUser != null)
+                {
+                    page.BindingContext = new LoginViewModel(sharedData.LoggedInUser.userName);
+                    sharedData.LoggedInUser = null;
+                }else
+                {
+                    await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
 
-            await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
-            
+                }
+            }
+
+            if (viewModelType == typeof(LoginViewModel))
+            {
+                SingletonSharedData sharedData = SingletonSharedData.GetInstance();
+                if (sharedData.LoggedInUser != null)
+                {
+                    page.BindingContext = new LoginViewModel(sharedData.LoggedInUser.userName);
+                    sharedData.LoggedInUser = null;
+                }
+                else
+                {
+                    await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
+
+                }
+            }
+            else
+            {
+                await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
+            }
         }
 
         private Type GetPageTypeForViewModel(Type viewModelType)

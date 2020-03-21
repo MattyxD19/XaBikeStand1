@@ -7,24 +7,22 @@
             <ContentPage.Content>
                 <StackLayout Margin="10" Orientation="Vertical">
                     <!-- <ListView x:Name="aboutList" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"> -->
-                    <ListView x:Name="navigationList" SeparatorVisibility="None"  ItemSelected="OnMenuItemSelected">
+                    <ListView x:Name="navigationList" SeparatorVisibility="None" HasUnevenRows="True" ItemSelected="OnMenuItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ViewCell>
+                                <ViewCell >
                                     <Grid BackgroundColor="#2f4259" Padding="10" Margin="1" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="1*" />
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="1*"/>
-
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="50"/>
                                         </Grid.RowDefinitions>
-                                        <Label Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Text}" VerticalOptions="Center" FontSize="18" TextColor="DarkBlue"/>
-                                        <Image Grid.Column="0" Source="{Binding ImagePath}"></Image>
-                                      
+                                        <Label Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Text="{Binding Text}" VerticalOptions="Center"   FontSize="24" TextColor="DarkBlue"/>
+                                        <Image Grid.Column="0" Grid.RowSpan="1"  VerticalOptions="Center" Source="{Binding ImagePath}"></Image>
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>

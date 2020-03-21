@@ -11,15 +11,28 @@ using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
 {
-    class ActionsViewModel : BaseViewModel, INotifyPropertyChanged
+    class ActionsViewModel : BaseViewModel
     {
+        SingletonSharedData sharedData;
 
+        private bool isLockIDEnabled;
+
+        public bool IsLockIDEnabled
+        {
+            get { return isLockIDEnabled; }
+            set { isLockIDEnabled = value; propertyIsChanged(); }
+        }
 
         public ActionsViewModel()
         {
+            sharedData = SingletonSharedData.GetInstance();
+            IsLockIDEnabled = true;
             FriendEntryUnfocused = new Command(FriendEntryValidation);
             StationEntryUnfocused = new Command(StationEntryValidation);
             LockEntryUnfocused = new Command(LockEntryValidation);
+            LockIDFocusedCommand = new Command(LockIDFocused);
+            NavigateScannerViewCommand = new Command(NavigateScannerView);
+           
             AddFriend = false;
             serverClient = new ServerClient();
             LockVisible = true;
@@ -38,7 +51,9 @@ namespace XaBikeStand.ViewModels
         public ICommand StationEntryUnfocused { get; protected set; }
         public ICommand LockEntryUnfocused { get; protected set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand NavigateScannerViewCommand { get; set; }
+
+       
 
         private string _FriendEmail;
 
@@ -51,7 +66,7 @@ namespace XaBikeStand.ViewModels
             set 
             { 
                 _FriendEmail = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
 
@@ -67,7 +82,7 @@ namespace XaBikeStand.ViewModels
             set 
             { 
                 _StationID = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
 
@@ -82,7 +97,7 @@ namespace XaBikeStand.ViewModels
             set
             {
                 _LockID = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
 
@@ -98,9 +113,41 @@ namespace XaBikeStand.ViewModels
             set 
             { 
                 _UnlockVisible = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
+
+        private bool isLockErrorVisible;
+
+        public bool IsLockErrorVisible
+        {
+            get
+            {
+                return isLockErrorVisible;
+            }
+            set
+            {
+                isLockErrorVisible = value;
+                propertyIsChanged();
+            }
+        }
+
+        private bool isUnlockErrorVisible;
+
+        public bool IsUnlockErrorVisible
+        {
+            get
+            {
+                return isUnlockErrorVisible;
+            }
+            set
+            {
+                isUnlockErrorVisible = value;
+                propertyIsChanged();
+            }
+        }
+
+
 
         private bool _LockVisible;
 
@@ -113,7 +160,7 @@ namespace XaBikeStand.ViewModels
             set
             {
                 _LockVisible = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
 
@@ -128,7 +175,7 @@ namespace XaBikeStand.ViewModels
             set
             {
                 _AddFriend = value;
-                OnPropertyChanged();
+                propertyIsChanged();
             }
         }
 
@@ -140,8 +187,13 @@ namespace XaBikeStand.ViewModels
 
             if (succes)
             {
+                IsUnlockErrorVisible = false;
+                IsLockIDEnabled = true;
                 LockVisible = true;
                 UnlockVisible = false;
+            } else
+            {
+                IsUnlockErrorVisible = true;
             }
 
 
@@ -156,25 +208,24 @@ namespace XaBikeStand.ViewModels
                succes = serverClient.Lock(convertedLockID);
             } else
             {
-                // error
+                IsLockErrorVisible = true;
             }
             Console.WriteLine(  "this worked " + succes);
             if (succes)
             {
+                IsLockIDEnabled = false;
                 LockVisible = false;
                 UnlockVisible = true;
+            } else
+            {
+                IsLockErrorVisible = true;
             }
-
             
-
         });
-
+        public ICommand LockIDFocusedCommand { get; set; }
         #endregion
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
 
         /**
          * The following three methods are used for entry validation
@@ -200,7 +251,34 @@ namespace XaBikeStand.ViewModels
             Console.WriteLine(_LockID);
         }
 
+        private void LockIDFocused()
+        {
+            IsLockErrorVisible = false;
+        }
 
+        private async void NavigateScannerView()
+        {
+            await NavigationService.NavigateToAsync(typeof(ScannerViewModel));
+        }
+
+        public void OnAppearing()
+        {
+            if (sharedData.ScannedBikestandID != null)
+            {
+                LockID = sharedData.ScannedBikestandID;
+            }
+            sharedData.ScannedBikestandID = null;
+
+            int lockedBikestandID;
+
+            if (int.TryParse(serverClient.GetLockedBikestand(), out lockedBikestandID))
+            {
+                LockID = "" + lockedBikestandID;
+                LockVisible = false;
+                UnlockVisible = true;
+                IsLockIDEnabled = false;
+            }
+        }
 
     }
 }

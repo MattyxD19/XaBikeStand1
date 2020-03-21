@@ -15,8 +15,10 @@
                               Address="{Binding Address}"
                               Label="{Binding Label}"
                               Type="{Binding Type}"
-                              MarkerClicked="Pin_MarkerClicked"
-                                  />
+                              MarkerClicked="Pin_MarkerClicked">
+                        
+
+                        </maps:Pin>
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
                 <x:Arguments>

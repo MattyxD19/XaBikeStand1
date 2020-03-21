@@ -66,6 +66,13 @@ namespace XaBikeStand.Views
                 TargetViewModel = typeof(AccountViewModel)
             });
 
+            list.Add(new MasterMenuItems()
+            {
+                Text = "Log ud",
+                ImagePath = "LogOutLogo.jpg",
+                TargetViewModel = typeof(LoginViewModel)
+            });
+            
             return list;
         }
 

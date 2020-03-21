@@ -21,13 +21,14 @@ namespace XaBikeStand
             ServiceContainer.Register<ISettingsService>(() => new SettingsService());
             _settingsService = ServiceContainer.Resolve<ISettingsService>();
             ServiceContainer.Register<INavigationService>(() => new NavigationService(_settingsService));
-            ServiceContainer.Register<LoginViewModel>(() => new LoginViewModel());
+            ServiceContainer.Register<LoginViewModel>(() => new LoginViewModel(null));
             ServiceContainer.Register<RegistrationViewModel>(() => new RegistrationViewModel());
             ServiceContainer.Register<ActionsViewModel>(() => new ActionsViewModel());
             ServiceContainer.Register<MapViewModel>(() => new MapViewModel());
             ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
             ServiceContainer.Register<InfoViewModel>(() => new InfoViewModel());
             ServiceContainer.Register<AboutUsViewModel>(() => new AboutUsViewModel());
+            ServiceContainer.Register<ScannerViewModel>(() => new ScannerViewModel());
 
 
 
@@ -37,7 +38,6 @@ namespace XaBikeStand
             //MainPage = new MainPage();
            
             var master = new Views.MasterDetail();
-            master.IsGestureEnabled = false;
             MainPage = master;
             master.BindingContext = masterDetailViewModel;
         }

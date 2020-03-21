@@ -8,7 +8,8 @@
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              xmlns:local="clr-namespace:XaBikeStand.ViewModels"
-             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand">
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
+             >
 
     <ContentPage.Content>
         <ScrollView>
@@ -29,21 +30,27 @@
                     </StackLayout>
 
                     <StackLayout Grid.Row="1">
-                        <Entry Placeholder="Username" FontSize="16" x:Name="UserName"  />
-                        <Entry Placeholder="Password" FontSize="16" x:Name="Password" >
+                        <Entry Placeholder="Username" Text="{Binding Username}" FontSize="16" x:Name="UserName"  >
+                            <Entry.Behaviors>
+                                <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding UsernameOnFocusCommand}"></CustomBehavior:EventToCommandBehavior>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label x:Name="userNameErrorLabel" Text="Username already exists" TextColor="Red" FontSize="14" IsVisible="{Binding UserNameErrorVisibile}" ></Label>  
+                        <Entry Placeholder="Password" Text="{Binding Password}"  FontSize="16" x:Name="Password" >
                             <Entry.Behaviors>
                                 <CustomBehavior:PasswordValidatorBehavior IsValid="{Binding IsPasswordValid}" ></CustomBehavior:PasswordValidatorBehavior>
                             </Entry.Behaviors>
                         </Entry>
-                        <Entry Placeholder="Email" Text="{Binding Email}" FontSize="16" x:Name="Email" >
+                        <Label x:Name="passwordRequirementLabel" FontSize="12"  Text="Minimum 8 characters both letters and numbers" />
+                        <Entry Placeholder="Email" FontSize="16" Text="{Binding Email}"  x:Name="EmailEntry" >
                             <Entry.Behaviors>
-                                <CustomBehavior:EmailValidatorBehavior IsValid="{Binding IsEmailValid}" ></CustomBehavior:EmailValidatorBehavior>
+                                <CustomBehavior:EmailValidatorBehavior x:Name="EmailValidator" IsValid ="{Binding IsEmailValid}"></CustomBehavior:EmailValidatorBehavior>
                             </Entry.Behaviors>
                         </Entry>
                     </StackLayout>
 
                     <StackLayout Grid.Row="2"  >
-                        <Button Margin="40" Text="Sign up" HorizontalOptions="CenterAndExpand" TextColor="White"  WidthRequest="200" Command="{Binding RegisterAccountCommand}"/>
+                        <Button Margin="40" Text="Sign up" HorizontalOptions="CenterAndExpand" TextColor="White" IsEnabled="{Binding Source={x:Reference EmailValidator}, Path=IsValid}"  WidthRequest="200" Command="{Binding RegisterAccountCommand}"/>
                     </StackLayout>
 
                     <StackLayout Grid.Row="3">

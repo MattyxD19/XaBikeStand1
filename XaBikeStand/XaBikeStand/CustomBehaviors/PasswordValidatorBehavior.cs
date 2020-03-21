@@ -6,13 +6,13 @@ using Xamarin.Forms;
 
 namespace XaBikeStand.CustomBehaviors
 {
-    class PasswordValidatorBehavior : BehaviorBase<Entry>
+    class PasswordValidatorBehavior : Behavior<Entry>
     {
 
         const string passwordRegex = @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
 ;
 
-        public static readonly BindablePropertyKey IsValidPropertyKey = BindableProperty.CreateReadOnly("IsValid", typeof(bool), typeof(EmailValidatorBehavior), false);
+        public static readonly BindablePropertyKey IsValidPropertyKey = BindableProperty.CreateReadOnly("IsValid", typeof(bool), typeof(PasswordValidatorBehavior), false);
 
         public static readonly BindableProperty IsValidProperty = IsValidPropertyKey.BindableProperty;
 
@@ -31,7 +31,14 @@ namespace XaBikeStand.CustomBehaviors
         void HandleUnFocused(object sender, EventArgs e)
         {
             Entry thisEntry = ((Entry)sender);
-            IsValid = (Regex.IsMatch(thisEntry.Text, passwordRegex, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
+            if (!String.IsNullOrEmpty(thisEntry.Text))
+            {
+                IsValid = (Regex.IsMatch(thisEntry.Text, passwordRegex, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
+            }
+            else
+            {
+                IsValid = false;
+            }
             thisEntry.TextColor = IsValid ? Color.FromHex("66e6d9") : Color.Red;
         }
 

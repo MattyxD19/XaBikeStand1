@@ -28,5 +28,6 @@ namespace XaBikeStand.Views
                     await Navigation.PushAsync(new LoginView());
             });
         }
+
     }
 }
