@@ -13,7 +13,7 @@ namespace XaBikeStand.ViewModels
         private ServerClient serverClient;
 
         private SingletonSharedData sharedData;
-        private String  email;
+        private String email;
 
 
         private bool userNameErrorVisibile;
@@ -21,7 +21,7 @@ namespace XaBikeStand.ViewModels
         public bool UserNameErrorVisibile
         {
             get { return userNameErrorVisibile; }
-            set { userNameErrorVisibile = value; propertyIsChanged();}
+            set { userNameErrorVisibile = value; propertyIsChanged(); }
         }
 
         public String Email
@@ -45,19 +45,25 @@ namespace XaBikeStand.ViewModels
             set { password = value; }
         }
 
-        public bool IsEmailValid { get; set; }  
+        public bool IsEmailValid { get; set; }
 
         public ICommand RegisterAccountCommand { get; set; }
 
         public ICommand UsernameOnFocusCommand { get; set; }
 
+        public ICommand GoToLoginCommand {get; set;}
         public RegistrationViewModel ()
         {
             sharedData = SingletonSharedData.GetInstance();
             serverClient = new ServerClient();
             RegisterAccountCommand = new Command(RegisterAccount);
             UsernameOnFocusCommand = new Command(UsernameOnFocus);
+            GoToLoginCommand = new Command(GoToLogin);
             IsEmailValid = false;
+        }
+        private async void GoToLogin()
+        {
+            await NavigationService.NavigateToAsync(typeof(LoginViewModel));
         }
 
         private void UsernameOnFocus()

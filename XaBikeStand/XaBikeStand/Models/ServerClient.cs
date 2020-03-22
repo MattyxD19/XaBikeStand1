@@ -120,11 +120,38 @@ namespace XaBikeStand.Models
             }
         }
 
-        public bool Lock(int bikestandID)
+        public BikeStation Lock(int bikestandID)
         {
             String responseFromServer = "";
             String target = standardAddress + "lock/" + bikestandID;
 
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+
+                try
+                {
+                    responseFromServer = GetResponse(request);
+                    return JsonConvert.DeserializeObject<BikeStation>(responseFromServer);
+                }
+                catch (System.Net.WebException)
+                {
+                }
+            }
+            return null; ;
+
+        }
+
+        public bool Unlock()
+        {
+            String responseFromServer = "";
+
+            String target = standardAddress + "unlock";
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
@@ -142,67 +169,41 @@ namespace XaBikeStand.Models
                 catch (System.Net.WebException)
                 {
                 }
-
-            }
-            return false;
-
-        }
-
-        public bool Unlock()
-            {
-                String responseFromServer = "";
-
-                String target = standardAddress + "unlock";
-
-                WebRequest request = WebRequest.Create(target);
-                request.Method = "POST";
-                request.ContentType = "application/json";
-                request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
-
-                using (Stream requestStream = request.GetRequestStream())
-                {
-
-                try
-                {
-                    responseFromServer = GetResponse(request);
-                    return true;
-                }
-                catch (System.Net.WebException)
-                {
-                }
             }
             return false;
         }
 
-            public Availability GetAvailability(String bikeStationID)
+        public Availability GetAvailability(String bikeStationID)
+        {
+            String response = "";
+
+            String target = standardAddress + "bikestations/GetAvailability/as";
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+
+            response = GetResponse(request);
+
+            return JsonConvert.DeserializeObject<Availability>(response);
+        }
+
+
+
+
+
+        private String GetStatusCode(WebRequest request)
+        {
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
-                String response = "";
-
-                String target = standardAddress + "bikestations/GetAvailability/as";
-
-                WebRequest request = WebRequest.Create(target);
-                request.Method = "GET";
-                request.ContentType = "application/json";
-                request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
-
-
-                response = GetResponse(request);
-
-                return JsonConvert.DeserializeObject<Availability>(response);
+                return response.StatusCode.ToString();
             }
+        }
 
 
-
-            private String GetStatusCode(WebRequest request)
-            {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    return response.StatusCode.ToString();
-                }
-            }
-
-
-        public String GetLockedBikestand()
+        public BikeStand GetLockedBikestand()
         {
             String response = "";
 
@@ -214,11 +215,81 @@ namespace XaBikeStand.Models
             request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
 
-            response = GetResponse(request);
+            BikeStand bikestand = null;
+            try
+            {
+                response = GetResponse(request);
+                if (!response.Equals("{}"))
+                {
+                    bikestand = JsonConvert.DeserializeObject<BikeStand>(response);
+                }
+            }
+            catch (WebException){}
+            catch (JsonSerializationException) { }
 
-            return response;
+
+            return bikestand;
         }
+
+        public BikeStation GetBikeStation(String id)
+        {
+            String response = "";
+
+            String target = standardAddress + "bikeStations/" + id;
+
+            Console.WriteLine("target" + target);
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+            BikeStation bikeStation = null;
+            try
+            {
+                response = GetResponse(request);
+                Console.WriteLine("response " + response);
+                bikeStation = JsonConvert.DeserializeObject<BikeStation>(response);
+            }
+            catch (WebException) { }
+            catch (JsonSerializationException) { }
+
+
+            return bikeStation;
+
+        }
+
+
+        public bool ShareBikestandLock(String username)
+        {
+            String responseFromServer = "";
+
+            WebRequest request = WebRequest.Create(standardAddress + "bikestandRegistration/AddRegistration");
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                using (StreamWriter streamWriter = new StreamWriter(requestStream))
+                {
+                    streamWriter.Write("{\"userName\": \"" + username + "\"}");
+                }
+            }
+            bool succes = false;
+            try
+            {
+                responseFromServer = GetResponse(request);
+                succes = true;
+            }
+            catch (System.Net.WebException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return succes;
         }
     }
+
+}
 
 

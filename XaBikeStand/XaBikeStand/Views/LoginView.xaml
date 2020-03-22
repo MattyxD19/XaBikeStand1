@@ -12,50 +12,52 @@
              xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
 
              xmlns:local="clr-namespace:XaBikeStand.ViewModels">
-  
-    
+
+
     <ContentPage.Content>
-        
+
         <ScrollView>
-            <StackLayout Padding="40" Spacing="10">
                 <Grid  VerticalOptions="CenterAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+
+                </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    
+                        <RowDefinition Height="0.8*"/>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="0.1*"/>
+
                     </Grid.RowDefinitions>
-
-                    <StackLayout Grid.Row="0">
-                        <Image Source="BikeRack.png" />
-                    </StackLayout>
-
-                    <StackLayout Grid.Row="1" Padding="10,40,10,40">
-                        <Entry Placeholder="UserName" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" >
+                    <Image Source="BikeRack.png" Grid.Row="0" Grid.ColumnSpan="4" />
+                    <Entry Placeholder="UserName" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" >
                             <Entry.Behaviors>
                                 <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
                             </Entry.Behaviors>
                         </Entry>
-                        <Entry Placeholder="Password"   FontSize="16" IsPassword="True"  x:Name="EntryPassword" Text="{Binding Password}"  >
+                <Entry Placeholder="Password" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16" IsPassword="True"  x:Name="EntryPassword" Text="{Binding Password}"  >
                             <Entry.Behaviors>
                                 <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
                                 <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
                             </Entry.Behaviors>
                         </Entry>
-                        <Label x:Name="loginErrorLabel" Text="Invalid username or password" TextColor="Red" IsVisible="{Binding IsLoginErrorVisible}"></Label>
+                <Label x:Name="loginErrorLabel" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="1" Text="Invalid username or password" TextColor="Red" IsVisible="{Binding IsLoginErrorVisible}"></Label>
 
-                        <Button Text="Login" Margin="40"  HorizontalOptions="CenterAndExpand" WidthRequest="200"  Command="{Binding LoginCommand}"/>
-                    </StackLayout>
+                <Button Text="Login" HorizontalOptions="CenterAndExpand"  Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1" WidthRequest="200"  Command="{Binding LoginCommand}"/>
 
-                    <StackLayout Grid.Row="2">
-                        <Label Text="I don't have an account yet" VerticalOptions="Center" HorizontalOptions="Center" >
+                <Label Text="I don't have an account yet" VerticalOptions="Center" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="1" HorizontalOptions="Center" >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding GoToRegisterPageCommand}" ></TapGestureRecognizer>
                             </Label.GestureRecognizers>
                         </Label>
-                    </StackLayout>
                 </Grid>
-            </StackLayout>
         </ScrollView>
 
 
