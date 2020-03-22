@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XaBikeStand.Models;
+using Plugin.Connectivity;
+using Rg.Plugins.Popup.Services;
+using XaBikeStand.Views;
+using Plugin.Connectivity.Abstractions;
 
 namespace XaBikeStand
 {
     public partial class App : Application
     {
-       
+
         ISettingsService _settingsService;
         public App()
         {
@@ -36,11 +40,27 @@ namespace XaBikeStand
             ServiceContainer.Register<MasterDetailViewModel>(() => masterDetailViewModel);
 
             //MainPage = new MainPage();
-           
+
             var master = new Views.MasterDetail();
             MainPage = master;
             master.BindingContext = masterDetailViewModel;
+
+            CrossConnectivity.Current.ConnectivityChanged += OnConnectivityChanged;
+       
         }
+
+        private async void OnConnectivityChanged(Object sender, ConnectivityChangedEventArgs args)
+        {
+            if (!args.IsConnected)
+            {
+                await PopupNavigation.PushAsync(new PopUpInternet());
+            }
+            else
+            {
+                await PopupNavigation.PopAllAsync();
+            }
+        }
+
 
         private Task InitNavigation()
         {
@@ -50,6 +70,10 @@ namespace XaBikeStand
 
         protected async override void OnStart()
         {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await PopupNavigation.PushAsync(new PopUpInternet());
+            }
             // Handle when your app starts
             base.OnStart();
             await InitNavigation();

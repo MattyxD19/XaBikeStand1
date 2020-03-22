@@ -54,7 +54,11 @@
                     </StackLayout>
 
                     <StackLayout Grid.Row="3">
-                        <Label Text="I have an account" VerticalOptions="Center" HorizontalOptions="Center" />
+                        <Label Text="I have an account" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToLoginCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </StackLayout>
                 </Grid>
             </StackLayout>

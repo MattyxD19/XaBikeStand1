@@ -19,7 +19,7 @@ namespace XaBikeStand.ViewModels
         public ICommand LoginCommand { get; set; }
 
         public ICommand GoToRegisterPageCommand { get; set; }
-   
+
         public ICommand OnEntryFocusedCommand { get; set; }
 
         private bool isLoginErrorVisible;
@@ -49,10 +49,16 @@ namespace XaBikeStand.ViewModels
 
         public LoginViewModel(string username)
         {
+            Console.WriteLine("it came to the login");
             ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = false;
             if (username != null)
             {
                 Username = username;
+            }
+            if (Application.Current.Properties.ContainsKey("username"))
+            {
+                Username = Application.Current.Properties["username"].ToString();
+                Console.WriteLine("username" + Application.Current.Properties["username"].ToString());
             }
             LoginCommand = new Command(Login);
             GoToRegisterPageCommand = new Command(GoToRegisterPage);
@@ -62,7 +68,7 @@ namespace XaBikeStand.ViewModels
 
         }
 
-        private void OnEntryFocused ()
+        private void OnEntryFocused()
         {
             IsLoginErrorVisible = false;
         }
@@ -74,13 +80,28 @@ namespace XaBikeStand.ViewModels
             {
                 sharedData.LoggedInUser = user;
                 ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = true;
+                SaveUsername(user.userName);
                 await NavigationService.NavigateToAsync(typeof(ActionsViewModel));
+
             }
             else
             {
                 IsLoginErrorVisible = true;
                 Password = "";
             }
+        }
+
+        private async void SaveUsername(String username)
+        {
+            if (!Application.Current.Properties.ContainsKey("username"))
+            {
+                Application.Current.Properties.Add("username", username);
+            }
+            else
+            {
+                Application.Current.Properties["username"] = username;
+            }
+            await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
         }
 
         private async void GoToRegisterPage()

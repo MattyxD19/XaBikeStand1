@@ -23,49 +23,28 @@ namespace XaBikeStand.ViewModels
             set { isLockIDEnabled = value; propertyIsChanged(); }
         }
 
-        public ActionsViewModel()
-        {
-            sharedData = SingletonSharedData.GetInstance();
-            IsLockIDEnabled = true;
-            FriendEntryUnfocused = new Command(FriendEntryValidation);
-            StationEntryUnfocused = new Command(StationEntryValidation);
-            LockEntryUnfocused = new Command(LockEntryValidation);
-            LockIDFocusedCommand = new Command(LockIDFocused);
-            NavigateScannerViewCommand = new Command(NavigateScannerView);
-           
-            AddFriend = false;
-            serverClient = new ServerClient();
-            LockVisible = true;
-        }
 
         ServerClient serverClient;
 
         public bool stationIDEntered = false;
         public bool lockIDEntered = false;
 
-        /**
-         * A custom behavior has been added to check if there is data
-         * in the entries, they are updated if the user is not focused on the entries
-         */
-        public ICommand FriendEntryUnfocused { get; protected set; }
-        public ICommand StationEntryUnfocused { get; protected set; }
-        public ICommand LockEntryUnfocused { get; protected set; }
 
         public ICommand NavigateScannerViewCommand { get; set; }
 
-       
 
-        private string _FriendEmail;
 
-        public string FriendEmail
+        private string shareUsername;
+
+        public string ShareUsername
         {
-            get 
-            { 
-                return _FriendEmail;
+            get
+            {
+                return shareUsername;
             }
-            set 
-            { 
-                _FriendEmail = value;
+            set
+            {
+                shareUsername = value;
                 propertyIsChanged();
             }
         }
@@ -76,11 +55,11 @@ namespace XaBikeStand.ViewModels
         public string StationID
         {
             get
-            { 
-                return _StationID; 
+            {
+                return _StationID;
             }
-            set 
-            { 
+            set
+            {
                 _StationID = value;
                 propertyIsChanged();
             }
@@ -106,12 +85,12 @@ namespace XaBikeStand.ViewModels
 
         public bool UnlockVisible
         {
-            get 
-            { 
-                return _UnlockVisible; 
+            get
+            {
+                return _UnlockVisible;
             }
-            set 
-            { 
+            set
+            {
                 _UnlockVisible = value;
                 propertyIsChanged();
             }
@@ -164,91 +143,155 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        private bool _AddFriend;
+        private bool isAddFriendEnabled;
 
-        public bool AddFriend
+        public bool IsAddFriendEnabled
         {
             get
             {
-                return _AddFriend;
+                return isAddFriendEnabled;
             }
             set
             {
-                _AddFriend = value;
+                isAddFriendEnabled = value;
+                propertyIsChanged();
+            }
+        }
+
+
+
+        private bool isAddFriendVisible;
+
+        public bool IsAddFriendVisible
+        {
+            get
+            {
+                return isAddFriendVisible;
+            }
+            set
+            {
+                isAddFriendVisible = value;
+                propertyIsChanged();
+            }
+        }
+
+        private bool isBikeStationVisible;
+
+        public bool IsBikeStationVisible
+        {
+            get
+            {
+                return isBikeStationVisible;
+            }
+            set
+            {
+                isBikeStationVisible = value;
+                propertyIsChanged();
+            }
+        }
+
+
+        private string bikeStationText;
+
+        public string BikeStationText
+        {
+            get { return bikeStationText; }
+            set
+            {
+                bikeStationText = value;
                 propertyIsChanged();
             }
         }
 
         #region --Command implementations--
 
-        public Command UnlockCMD => new Command(async () =>
+        public ICommand UnlockCommand { get; set; }
+
+        public ICommand LockCommand { get; set; }
+
+
+        public ICommand LockIDFocusedCommand { get; set; }
+
+        public ICommand ShareWithFriendCommand { get; set; }
+        #endregion
+
+
+        public ActionsViewModel()
+        {
+            sharedData = SingletonSharedData.GetInstance();
+            IsLockIDEnabled = true;
+
+            LockIDFocusedCommand = new Command(LockIDFocused);
+            NavigateScannerViewCommand = new Command(NavigateScannerView);
+            LockCommand = new Command(Lock);
+            UnlockCommand = new Command(Unlock);
+            ShareWithFriendCommand = new Command(ShareWithFriend);
+            serverClient = new ServerClient();
+            LockVisible = true;
+            IsAddFriendEnabled = false;
+        }
+        private void ShareWithFriend()
+        {
+            if (!String.IsNullOrEmpty(shareUsername))
+            {
+                if (serverClient.ShareBikestandLock(shareUsername))
+                {
+                    ShareUsername = "";
+                }
+            }
+
+
+        }
+
+        private void Lock()
+        {
+            BikeStation bikeStation = null;
+            if (int.TryParse(LockID, out int convertedLockID))
+            {
+                bikeStation = serverClient.Lock(convertedLockID);
+            }
+            else
+            {
+                IsLockErrorVisible = true;
+            }
+            if (bikeStation != null)
+            {
+                IsAddFriendEnabled = true;
+                IsLockIDEnabled = false;
+                LockVisible = false;
+                UnlockVisible = true;
+                IsLockErrorVisible = false;
+                IsAddFriendVisible = true;
+                BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, DateTime.Now);
+                IsBikeStationVisible = true;
+                
+
+            }
+            else
+            {
+                IsLockErrorVisible = true;
+            }
+        }
+
+        private void Unlock()
         {
             bool succes = serverClient.Unlock();
 
             if (succes)
             {
                 IsUnlockErrorVisible = false;
+                IsUnlockErrorVisible = false;
                 IsLockIDEnabled = true;
                 LockVisible = true;
                 UnlockVisible = false;
-            } else
-            {
-                IsUnlockErrorVisible = true;
+                IsAddFriendVisible = false;
+                IsBikeStationVisible = false;
+                LockID = "";
             }
-
-
-            
-        });
-
-        public Command LockCMD => new Command(async () =>
-        {
-            bool succes = false;
-            if (int.TryParse(LockID, out int convertedLockID))
+            else
             {
-               succes = serverClient.Lock(convertedLockID);
-            } else
-            {
-                IsLockErrorVisible = true;
+                IsUnlockErrorVisible = true; 
             }
-            Console.WriteLine(  "this worked " + succes);
-            if (succes)
-            {
-                IsLockIDEnabled = false;
-                LockVisible = false;
-                UnlockVisible = true;
-            } else
-            {
-                IsLockErrorVisible = true;
-            }
-            
-        });
-        public ICommand LockIDFocusedCommand { get; set; }
-        #endregion
-
-
-
-        /**
-         * The following three methods are used for entry validation
-         * they are currently only checking for any value in the entries
-         * but they should preferably check for valid data in the back-end
-         */
-
-        private void FriendEntryValidation(object FriendEntry)
-        {
-            AddFriend = true;
-            FriendEmail = _FriendEmail;
-        }
-        private void StationEntryValidation(object FriendEntry)
-        {
-            stationIDEntered = true;
-            StationID = _StationID;
-            Console.WriteLine(_StationID);
-        }
-        private void LockEntryValidation(object FriendEntry)
-        {
-            lockIDEntered = true;
-            LockID = _LockID;
-            Console.WriteLine(_LockID);
         }
 
         private void LockIDFocused()
@@ -269,16 +312,28 @@ namespace XaBikeStand.ViewModels
             }
             sharedData.ScannedBikestandID = null;
 
-            int lockedBikestandID;
-
-            if (int.TryParse(serverClient.GetLockedBikestand(), out lockedBikestandID))
+            BikeStand lockedBikestand = serverClient.GetLockedBikestand();
+            if (lockedBikestand != null)
             {
-                LockID = "" + lockedBikestandID;
+                LockID = "" + lockedBikestand.bikestandID;
                 LockVisible = false;
                 UnlockVisible = true;
                 IsLockIDEnabled = false;
+                IsAddFriendEnabled = true;
+                IsAddFriendVisible = true;
+                BikeStation bikeStation = serverClient.GetBikeStation(lockedBikestand.bikeStationID);
+                if (bikeStation != null)
+                {
+                    BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, DateTime.Now);
+                    IsBikeStationVisible = true;
+                }
+            }
+            else
+            {
+                IsAddFriendVisible = false;
+                IsBikeStationVisible = false;
+
             }
         }
-
     }
 }

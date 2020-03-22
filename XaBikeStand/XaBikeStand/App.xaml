@@ -19,7 +19,7 @@
         <Style TargetType="Button">
             <Setter Property="BackgroundColor" Value="#66e6d9" />
             <Setter Property="TextColor" Value="White" />
-
+            <Setter Property="CornerRadius" Value="20"/>
         </Style>
     </Application.Resources>
 </Application>
