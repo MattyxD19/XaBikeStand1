@@ -2,7 +2,7 @@
 
 namespace XaBikeStand.Models
 {
-    public class BikeStation : ISerializable
+    public class BikeStation
     {
         public String bikeStationID { get; set; }
         public String title { get; set; }

@@ -26,6 +26,11 @@ namespace XaBikeStand.CustomBehaviors
             bindable.Focused += HandleFocused;
         }
 
+        /// <summary>
+        /// Handles password validation and sets the text to red if wrong 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void HandleUnFocused(object sender, EventArgs e)
         {
             Entry thisEntry = ((Entry)sender);
@@ -48,8 +53,6 @@ namespace XaBikeStand.CustomBehaviors
         {
             bindable.Unfocused -= HandleUnFocused;
             bindable.Focused -= HandleFocused;
-
-
         }
     }
 }

@@ -59,7 +59,9 @@ namespace XaBikeStand.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Deletes an account
+        /// </summary>
         private async void DeleteAccount()
         {
             bool deleteValidation = await Application.Current.MainPage.DisplayAlert("Delete your account", "Are you sure", "Delete", "Cancel");
@@ -74,6 +76,9 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+        /// <summary>
+        /// Updates an account
+        /// </summary>
         private async void UpdateAccount()
         {
             bool isEmailValid = (Regex.IsMatch(email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +

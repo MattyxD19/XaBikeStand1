@@ -30,13 +30,7 @@ namespace XaBikeStand.Services
 
         public Task InitializeAsync()
         {
-            //return NavigateToAsync<UserNameViewModel>();
-            return NavigateToAsync<LoginViewModel>();//The startpage
-
-            //if (string.IsNullOrEmpty(_settingsService.AuthAccessToken))
-            //return NavigateToAsync<MenuViewModel>();
-            //else
-            //  return NavigateToAsync<MenuViewModel>();
+            return NavigateToAsync<LoginViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : BaseViewModel
@@ -92,7 +86,6 @@ namespace XaBikeStand.Services
         {
             Page page = CreatePage(viewModelType, parameter);
 
-            //Use Master detail navigation instead
             var mpage = Application.Current.MainPage as MasterDetailPage;
             mpage.Detail = new NavigationPage(page);
 

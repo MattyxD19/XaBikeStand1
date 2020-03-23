@@ -17,9 +17,6 @@ namespace XaBikeStand
         public App()
         {
             InitializeComponent();
-
-
-
             ServiceContainer.Register<ISettingsService>(() => new SettingsService());
             _settingsService = ServiceContainer.Resolve<ISettingsService>();
             ServiceContainer.Register<INavigationService>(() => new NavigationService(_settingsService));
@@ -42,6 +39,11 @@ namespace XaBikeStand
 
         }
 
+        /// <summary>
+        /// Opens or closes a popup page if the connectivity of the device is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private async void OnConnectivityChanged(Object sender, ConnectivityChangedEventArgs args)
         {
             if (!args.IsConnected)
@@ -67,7 +69,6 @@ namespace XaBikeStand
             {
                 await PopupNavigation.PushAsync(new PopUpInternet());
             }
-            // Handle when your app starts
             base.OnStart();
             await InitNavigation();
             base.OnResume();
@@ -75,12 +76,10 @@ namespace XaBikeStand
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
         }
     }
 }

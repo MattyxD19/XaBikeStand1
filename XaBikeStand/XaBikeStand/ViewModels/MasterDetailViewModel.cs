@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
 using XaBikeStand.Models;
 using XaBikeStand.Views;
 using Xamarin.Forms;
@@ -78,7 +77,11 @@ namespace XaBikeStand.ViewModels
             });
         }
 
-        private async void ChangeView (MasterMenuItems mmi) 
+        /// <summary>
+        /// Changes the view to the desired view from the listview of menuitems
+        /// </summary>
+        /// <param name="mmi"></param>
+        private async void ChangeView(MasterMenuItems mmi)
         {
             IsPresented = false;
             ((MasterDetail)(MasterDetailPage)Application.Current.MainPage).ClearSelection();

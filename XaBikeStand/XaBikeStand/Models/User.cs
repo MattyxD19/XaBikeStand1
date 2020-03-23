@@ -1,6 +1,6 @@
 ﻿namespace XaBikeStand.Models
 {
-    public class User : ISerializable
+    public class User
     {
         public string userName { get; set; }
         public string psw { get; set; }

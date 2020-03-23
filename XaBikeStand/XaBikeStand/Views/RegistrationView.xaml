@@ -8,8 +8,7 @@
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              xmlns:local="clr-namespace:XaBikeStand.ViewModels"
-             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
-             >
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand">
 
     <ContentPage.Content>
         <Grid >
@@ -34,8 +33,6 @@
                 <RowDefinition Height="1.3*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="3*"/>
-
-
             </Grid.RowDefinitions>
             <StackLayout Padding="40" Grid.Row="0"/>
             <Image Source="BikeRack.png" Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4"/>

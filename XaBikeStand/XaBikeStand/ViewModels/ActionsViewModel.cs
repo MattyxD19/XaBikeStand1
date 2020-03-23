@@ -253,6 +253,9 @@ namespace XaBikeStand.ViewModels
             LockVisible = true;
         }
 
+        /// <summary>
+        /// Removes the shared access to a bikestand
+        /// </summary>
         private void RemoveShared()
         {
             if (serverClient.DeleteSharedAccess(sharedAccessTo))
@@ -262,6 +265,9 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+        /// <summary>
+        /// Shares the access to a bikestand with another user
+        /// </summary>
         private void ShareWithFriend()
         {
             if (!String.IsNullOrEmpty(shareUsername))
@@ -277,6 +283,9 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+        /// <summary>
+        /// Locks a bikestand and updates the interface
+        /// </summary>
         private void Lock()
         {
             BikeStandRegistration bikestandRegistration = null;
@@ -306,6 +315,10 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Unlocks the bikestand and updates the interface
+        /// </summary>
         private void Unlock()
         {
             bool succes = serverClient.Unlock();
@@ -333,11 +346,17 @@ namespace XaBikeStand.ViewModels
             IsLockErrorVisible = false;
         }
 
+        /// <summary>
+        /// Navigates to the scanner view
+        /// </summary>
         private async void NavigateScannerView()
         {
             await NavigationService.NavigateToAsync(typeof(ScannerViewModel));
         }
 
+        /// <summary>
+        /// This method updates the interface according to the relevant data from the backend when the Actionview appears
+        /// </summary>
         public void OnAppearing()
         {
             if (sharedData.ScannedBikestandID != null)
@@ -349,7 +368,6 @@ namespace XaBikeStand.ViewModels
                 }
             }
             sharedData.ScannedBikestandID = null;
-
             BikeStandRegistration bikestandRegistration = serverClient.GetLockedBikestand();
             if (bikestandRegistration != null)
             {

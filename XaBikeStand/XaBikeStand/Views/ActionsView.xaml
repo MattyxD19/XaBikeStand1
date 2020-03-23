@@ -5,9 +5,8 @@
              xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              x:Class="XaBikeStand.Views.ActionsView"
-             Appearing="ContentPage_Appearing">
-
-
+             Appearing="ContentPage_Appearing" 
+             NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Content>
         <StackLayout>

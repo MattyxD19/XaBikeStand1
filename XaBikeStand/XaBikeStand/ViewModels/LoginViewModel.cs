@@ -64,7 +64,6 @@ namespace XaBikeStand.ViewModels
             OnEntryFocusedCommand = new Command(OnEntryFocused);
             serverClient = new ServerClient();
             sharedData = SingletonSharedData.GetInstance();
-
         }
 
 
@@ -73,6 +72,9 @@ namespace XaBikeStand.ViewModels
             IsLoginErrorVisible = false;
         }
 
+        /// <summary>
+        /// Changes the view if the login is successful
+        /// </summary>
         private async void Login()
         {
             User user = serverClient.Login(username, password);
@@ -91,6 +93,10 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+        /// <summary>
+        /// Saves the username in the app 
+        /// </summary>
+        /// <param name="username"></param>
         private async void SaveUsername(String username)
         {
             if (!Application.Current.Properties.ContainsKey("username"))
@@ -104,6 +110,9 @@ namespace XaBikeStand.ViewModels
             await Application.Current.SavePropertiesAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Navigates to the registration page
+        /// </summary>
         private async void GoToRegisterPage()
         {
             await NavigationService.NavigateToAsync(typeof(RegistrationViewModel));

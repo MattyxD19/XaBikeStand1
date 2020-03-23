@@ -7,12 +7,8 @@
              x:Class="XaBikeStand.Views.LoginView" 
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
-             NavigationPage.HasNavigationBar="false"
-                         
-             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
-
-             xmlns:local="clr-namespace:XaBikeStand.ViewModels">
-
+             NavigationPage.HasNavigationBar="false"                  
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand">
 
     <ContentPage.Content>
         <Grid >
