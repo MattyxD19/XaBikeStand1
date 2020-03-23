@@ -99,62 +99,16 @@ namespace XaBikeStand.Services
             var mpage = Application.Current.MainPage as MasterDetailPage;
             mpage.Detail = new NavigationPage(page);
 
-            /*
-            if (page is TestView) //avoid back buttons
-            {
-                NavigationPage.SetHasBackButton(page, false); //remove back button
-                NavigationPage.SetHasNavigationBar(page, false); //remove top nav bar
-
-                Application.Current.MainPage = new CustomNavigationPage(page);
-            }
-            else
-            {
-                var navigationPage = Application.Current.MainPage as CustomNavigationPage;
-                if (navigationPage != null)
-                {
-                    NavigationPage.SetHasBackButton(page, false); //remove back button
-                    NavigationPage.SetHasNavigationBar(page, false); //remove top nav bar
-                    await navigationPage.PushAsync(page);
-                }
-                else
-                {
-                    NavigationPage.SetHasBackButton(page, false); //remove back button
-                    NavigationPage.SetHasNavigationBar(page, false); //remove top nav bar
-
-                    Application.Current.MainPage = new CustomNavigationPage(page);
-                }
-            }*/
             if (viewModelType == typeof(LoginViewModel))
             {
                 SingletonSharedData sharedData = SingletonSharedData.GetInstance();
-                if (sharedData.LoggedInUser != null)
-                {
-                    page.BindingContext = new LoginViewModel(sharedData.LoggedInUser.userName);
-                    sharedData.LoggedInUser = null;
-                }else
-                {
-                    await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
 
-                }
-            }
+                page.BindingContext = new LoginViewModel();
 
-            if (viewModelType == typeof(LoginViewModel))
-            {
-                SingletonSharedData sharedData = SingletonSharedData.GetInstance();
-                if (sharedData.LoggedInUser != null)
-                {
-                    page.BindingContext = new LoginViewModel(sharedData.LoggedInUser.userName);
-                    sharedData.LoggedInUser = null;
-                }
-                else
-                {
-                    await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
-
-                }
             }
             else
             {
-                await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);//error why
+                await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);
             }
         }
 

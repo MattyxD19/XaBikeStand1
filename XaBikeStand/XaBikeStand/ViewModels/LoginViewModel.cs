@@ -47,7 +47,7 @@ namespace XaBikeStand.ViewModels
             set { password = value; propertyIsChanged(); }
         }
 
-        public LoginViewModel(string username)
+        public LoginViewModel()
         {
             Console.WriteLine("it came to the login");
             ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = false;

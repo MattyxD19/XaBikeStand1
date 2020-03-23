@@ -16,7 +16,13 @@ namespace XaBikeStand.ViewModels
     {
         public MapViewModel()
         {
-            GetPins();
+            try
+            {
+                GetPins();
+            }catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         private Pin _pin;

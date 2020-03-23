@@ -69,7 +69,7 @@ namespace XaBikeStand.Views
             list.Add(new MasterMenuItems()
             {
                 Text = "Log ud",
-                ImagePath = "LogOutLogo.jpg",
+                ImagePath = "LogOutLogo.png",
                 TargetViewModel = typeof(LoginViewModel)
             });
             

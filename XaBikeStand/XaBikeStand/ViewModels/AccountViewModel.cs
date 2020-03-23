@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using XaBikeStand.Models;
 using Xamarin.Forms;
@@ -13,138 +14,108 @@ namespace XaBikeStand.ViewModels
 {
     class AccountViewModel : BaseViewModel
     {
-        private User updatedUser;
+        private ServerClient serverClient;
+
+        private SingletonSharedData sharedData;
+        private String email;
 
 
-        #region --Bindings--
 
-        private bool _VisiblePassword;
 
-        public bool VisiblePassword
+        public String Email
         {
-            get
-            {
-                return _VisiblePassword;
-            }
-            set
-            {
-                _VisiblePassword = value;
-                propertyIsChanged();
-            }
-
+            get { return email; }
+            set { email = value; }
         }
 
-        private bool _EnableSaveButton;
+        private String username;
 
-        public bool EnableSaveButton
+        public String Username
         {
-            get
-            {
-                return _EnableSaveButton;
-            }
-            set
-            {
-                _EnableSaveButton = value;
-                propertyIsChanged();
-            }
+            get { return username; }
+            set { username = value; }
+        }
+        private String password;
+
+        public String Password
+        {
+            get { return password; }
+            set { password = value; }
         }
 
-   
+        public bool IsEmailValid { get; set; }
 
-        #endregion
+        public ICommand UpdateAccountCommand { get; set; }
 
 
-        #region --User properties--
 
-        private string _AccountUserName;
-
-        public string AccountUserName
+        public ICommand DeleteAccountCommand { get; set; }
+        public AccountViewModel()
         {
-            get
-            {
-                return _AccountUserName;
-            }
-
-            set
-            {
-                _AccountUserName = value;
-
-                propertyIsChanged();
-
-            }
+            sharedData = SingletonSharedData.GetInstance();
+            serverClient = new ServerClient();
+            UpdateAccountCommand = new Command(UpdateAccount);
+            DeleteAccountCommand = new Command(DeleteAccount);
+            IsEmailValid = false;
+            Username = "Username : " + sharedData.LoggedInUser.userName;
+            Email = sharedData.LoggedInUser.email;
         }
 
-        private string _AccountPassword;
 
-        public string AccountPassword
+
+        private async void DeleteAccount()
         {
-            get
+            bool deleteValidation = await Application.Current.MainPage.DisplayAlert("Delete your account", "Are you sure", "Delete", "Cancel");
+            if (deleteValidation)
             {
-                return _AccountPassword;
-            }
+                if (serverClient.DeleteUser(sharedData.LoggedInUser.userName) != null)
+                {
 
-            set
-            {
-                _AccountPassword = value;
-
-                propertyIsChanged();
-
+                    Application.Current.Properties.Remove("username");
+                    NavigationService.NavigateToAsync(typeof(LoginViewModel));
+                }
             }
         }
 
-        private string _AccountEmail;
-        public string AccountEmail
+
+
+
+        private async void UpdateAccount()
         {
-            get
+            //bool isEmailValid = Regex.IsMatch(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+            //@"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", email ,RegexOptions.IgnoreCase);
+
+            bool isEmailValid = (Regex.IsMatch(email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+            @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
+
+            bool isPasswordValid = false;
+            if (!String.IsNullOrEmpty(password))
             {
-                return _AccountEmail;
+                isPasswordValid = (Regex.IsMatch(password, @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
             }
-
-            set
+            if (isEmailValid && (isPasswordValid || String.IsNullOrEmpty(password)) && !String.IsNullOrEmpty(username))
             {
-                _AccountEmail = value;
+                User user = null;
+                if (String.IsNullOrEmpty(password))
+                {
+                    user = new User { userName = sharedData.LoggedInUser.userName, email = email };
+                }
+                else
+                {
+                    user = new User { userName = sharedData.LoggedInUser.userName, psw = password, email = email };
+                }
+                User updatedUser = serverClient.UpdateUser(user);
+                if (updatedUser != null)
+                {
+                    sharedData.LoggedInUser.email = updatedUser.email;
 
-                propertyIsChanged();
-
+                    await NavigationService.NavigateToAsync(typeof(ActionsViewModel));
+                }
             }
         }
-
-        #endregion
-
-        public Command ChangeInfoCMD => new Command(async () =>
-        {
-            //Just testing
-            updatedUser.userName = "Mathias";
-            updatedUser.email = "Mathias@Test.dk";
-            updatedUser.psw = "Test";
         
 
-            if (EnableSaveButton == false)
-            {
-                EnableSaveButton = true;
-                VisiblePassword = false;
-            }
-        });
 
-        public Command SaveInfoCMD => new Command(async () =>
-        {
-            updatedUser.userName = AccountUserName;
-            updatedUser.psw = AccountPassword;
-            updatedUser.email = AccountEmail;
-
-
-            if (EnableSaveButton == true)
-            {
-                EnableSaveButton = false;
-                VisiblePassword = true;
-            }
-
-            //UpdateUser();
-
-        });
-
-
-     
 
 
 
@@ -161,7 +132,7 @@ namespace XaBikeStand.ViewModels
             //var uriDB = "";
             //var updateContent = JsonConvert.SerializeObject(updatedUser);
             //var response = await client.PutAsync(uriDB, updateContent);
-            
+
         }
         */
 
