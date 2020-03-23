@@ -54,6 +54,12 @@ namespace XaBikeStand.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Loads all the bikestations from the back-end on startup
+        /// The bikestation information is then added to the pin
+        /// where as the pin is added to the map
+        /// </summary>
+        
         private void GetPins()
         {
             Pins = new ObservableCollection<Pin>();
@@ -71,6 +77,12 @@ namespace XaBikeStand.ViewModels
                 Pins.Add(pin);
             }
         }
+
+        /// <summary>
+        /// A custom eventhandler
+        /// It shows information about a bikestation</summary>
+        /// when the pin is tapped on the map 
+        /// <param name="tappedPin"></param>
 
         public async void OnPinClicked(Pin tappedPin)
         {
