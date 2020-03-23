@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XaBikeStand.Models;
-using XaBikeStand.Services;
-using XaBikeStand.ViewModels;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace XaBikeStand.Views
@@ -27,7 +19,7 @@ namespace XaBikeStand.Views
         async void Login_Clicked(object sender, System.EventArgs e)
         {
 
-        var result = await this.DisplayAlert("Congratulation", "Login Successful", "Yes", "Cancel");
+            var result = await this.DisplayAlert("Congratulation", "Login Successful", "Yes", "Cancel");
 
 
 

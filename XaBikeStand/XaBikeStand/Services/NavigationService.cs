@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+using XaBikeStand.Models;
 using XaBikeStand.ViewModels;
 using XaBikeStand.Views;
-using XaBikeStand.Services;
-using XaBikeStand.Models;
+using Xamarin.Forms;
 
 namespace XaBikeStand.Services
 {

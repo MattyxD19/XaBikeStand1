@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using XaBikeStand.Models;
@@ -51,8 +49,8 @@ namespace XaBikeStand.ViewModels
 
         public ICommand UsernameOnFocusCommand { get; set; }
 
-        public ICommand GoToLoginCommand {get; set;}
-        public RegistrationViewModel ()
+        public ICommand GoToLoginCommand { get; set; }
+        public RegistrationViewModel()
         {
             sharedData = SingletonSharedData.GetInstance();
             serverClient = new ServerClient();
@@ -92,7 +90,8 @@ namespace XaBikeStand.ViewModels
                 {
                     sharedData.LoggedInUser = (User)serializable;
                     await NavigationService.NavigateToAsync(typeof(ActionsViewModel));
-                } else
+                }
+                else
                 {
                     UserNameErrorVisibile = true;
                 }

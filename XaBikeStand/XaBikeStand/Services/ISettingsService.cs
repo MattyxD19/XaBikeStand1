@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XaBikeStand.Services
+﻿namespace XaBikeStand.Services
 {
     public interface ISettingsService
     {

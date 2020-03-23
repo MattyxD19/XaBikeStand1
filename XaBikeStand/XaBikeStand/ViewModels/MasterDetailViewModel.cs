@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
+﻿using System.Windows.Input;
 using XaBikeStand.Models;
+using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
 {
@@ -33,9 +29,10 @@ namespace XaBikeStand.ViewModels
                 SelectedItem = null;
             }
         }*/
-        
 
-        public ICommand ChangeVMCMD => new Command<MasterMenuItems>(async (MasterMenuItems mmi) => {
+
+        public ICommand ChangeVMCMD => new Command<MasterMenuItems>(async (MasterMenuItems mmi) =>
+        {
 
             await NavigationService.NavigateToAsync(mmi.TargetViewModel);
 

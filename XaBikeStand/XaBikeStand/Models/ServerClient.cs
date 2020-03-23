@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
-using System.Text;
 
 namespace XaBikeStand.Models
 {
@@ -112,7 +110,7 @@ namespace XaBikeStand.Models
                     Console.WriteLine("response " + responseFromServer);
                     foundSerializable = JsonConvert.DeserializeObject<User>(responseFromServer);
                 }
-                catch (System.Net.WebException e)
+                catch (System.Net.WebException)
                 {
                 }
 
@@ -189,7 +187,7 @@ namespace XaBikeStand.Models
             }
         }
 
-        public BikeStation Lock(int bikestandID)
+        public BikeStandRegistration Lock(int bikestandID)
         {
             String responseFromServer = "";
             String target = standardAddress + "lock/" + bikestandID;
@@ -206,7 +204,7 @@ namespace XaBikeStand.Models
                 try
                 {
                     responseFromServer = GetResponse(request);
-                    return JsonConvert.DeserializeObject<BikeStation>(responseFromServer);
+                    return JsonConvert.DeserializeObject<BikeStandRegistration>(responseFromServer);
                 }
                 catch (System.Net.WebException)
                 {
@@ -246,7 +244,7 @@ namespace XaBikeStand.Models
         {
             String response = "";
 
-            String target = standardAddress + "bikestations/GetAvailability/as";
+            String target = standardAddress + "bikestations/GetAvailability/" + bikeStationID;
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "GET";
@@ -255,7 +253,7 @@ namespace XaBikeStand.Models
 
 
             response = GetResponse(request);
-
+            Console.WriteLine("availability " + response);
             return JsonConvert.DeserializeObject<Availability>(response);
         }
 
@@ -272,7 +270,7 @@ namespace XaBikeStand.Models
         }
 
 
-        public BikeStand GetLockedBikestand()
+        public BikeStandRegistration GetLockedBikestand()
         {
             String response = "";
 
@@ -284,13 +282,13 @@ namespace XaBikeStand.Models
             request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
 
-            BikeStand bikestand = null;
+            BikeStandRegistration bikestand = null;
             try
             {
                 response = GetResponse(request);
                 if (!response.Equals("{}"))
                 {
-                    bikestand = JsonConvert.DeserializeObject<BikeStand>(response);
+                    bikestand = JsonConvert.DeserializeObject<BikeStandRegistration>(response);
                 }
             }
             catch (WebException) { }
@@ -358,7 +356,7 @@ namespace XaBikeStand.Models
             return succes;
         }
 
-        public String GetSharedUsername ()
+        public String GetSharedUsername()
         {
             String response = null;
 
@@ -370,7 +368,6 @@ namespace XaBikeStand.Models
             request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
 
 
-            BikeStand bikestand = null;
             try
             {
                 response = GetResponse(request);
@@ -381,7 +378,7 @@ namespace XaBikeStand.Models
             return response;
         }
 
-        
+
         public bool DeleteSharedAccess(String id)
         {
             String response = "";

@@ -1,10 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using XaBikeStand.Models;
@@ -113,7 +107,7 @@ namespace XaBikeStand.ViewModels
                 }
             }
         }
-        
+
 
 
 

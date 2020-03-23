@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using XaBikeStand.Services;
 
 namespace XaBikeStand.ViewModels
@@ -11,7 +8,7 @@ namespace XaBikeStand.ViewModels
         protected readonly INavigationService NavigationService;
 
         internal static string UserName = "";
-        
+
         public BaseViewModel()
         {
             NavigationService = ViewModelLocator.Resolve<INavigationService>();

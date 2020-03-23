@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -26,7 +24,7 @@ namespace XaBikeStand.Services
             set => AddOrUpdateValue(IdToken, value);
         }
 
-       
+
         public Task AddOrUpdateValue(string key, bool value) => AddOrUpdateValueInternal(key, value);
         public Task AddOrUpdateValue(string key, string value) => AddOrUpdateValueInternal(key, value);
         public bool GetValueOrDefault(string key, bool defaultValue) => GetValueOrDefaultInternal(key, defaultValue);

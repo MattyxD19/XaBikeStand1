@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
 using XaBikeStand.Models;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
@@ -63,7 +57,7 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        
+
 
         private string _StationID;
 
@@ -141,7 +135,7 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        private string sharedAccessTo; 
+        private string sharedAccessTo;
 
 
         private bool _LockVisible;
@@ -221,7 +215,7 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        
+
 
 
         private string bikeStationText;
@@ -249,7 +243,7 @@ namespace XaBikeStand.ViewModels
 
         public ICommand RemoveSharedCommand { get; set; }
 
-    
+
 
         #endregion
 
@@ -296,24 +290,26 @@ namespace XaBikeStand.ViewModels
 
         private void Lock()
         {
-            BikeStation bikeStation = null;
+            BikeStandRegistration bikestandRegistration = null;
             if (int.TryParse(LockID, out int convertedLockID))
             {
-                bikeStation = serverClient.Lock(convertedLockID);
+                bikestandRegistration = serverClient.Lock(convertedLockID);
+
             }
             else
             {
                 IsLockErrorVisible = true;
             }
-            if (bikeStation != null)
+            if (bikestandRegistration != null)
             {
+                BikeStation bikeStation = serverClient.GetBikeStation("" + bikestandRegistration.BikeStandID);
                 IsAddFriendEnabled = true;
                 IsLockIDEnabled = false;
                 LockVisible = false;
                 UnlockVisible = true;
                 IsLockErrorVisible = false;
                 IsAddFriendVisible = true;
-                BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, DateTime.Now);
+                BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
                 IsBikeStationVisible = true;
             }
             else
@@ -366,23 +362,23 @@ namespace XaBikeStand.ViewModels
             }
             sharedData.ScannedBikestandID = null;
 
-            BikeStand lockedBikestand = serverClient.GetLockedBikestand();
-            if (lockedBikestand != null)
+            BikeStandRegistration bikestandRegistration = serverClient.GetLockedBikestand();
+            if (bikestandRegistration != null)
             {
-                LockID = "" + lockedBikestand.bikestandID;
+                LockID = "" + bikestandRegistration.BikeStandID;
                 LockVisible = false;
                 UnlockVisible = true;
                 IsLockIDEnabled = false;
                 IsAddFriendEnabled = true;
                 IsAddFriendVisible = true;
-                BikeStation bikeStation = serverClient.GetBikeStation(lockedBikestand.bikeStationID);
+                BikeStation bikeStation = serverClient.GetBikeStation(""+ bikestandRegistration.BikeStandID);
                 if (bikeStation != null)
                 {
-                    BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, DateTime.Now);
+                    BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
                     IsBikeStationVisible = true;
                 }
                 String sharedWithUsername = serverClient.GetSharedUsername();
-                if (!String.IsNullOrEmpty(sharedWithUsername))   
+                if (!String.IsNullOrEmpty(sharedWithUsername))
                 {
                     sharedAccessTo = sharedWithUsername;
                     SharedWithText = "Shared with: " + sharedAccessTo;
