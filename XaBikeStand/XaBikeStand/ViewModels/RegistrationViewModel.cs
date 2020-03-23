@@ -64,6 +64,10 @@ namespace XaBikeStand.ViewModels
             UsernameOnFocusCommand = new Command(UsernameOnFocus);
             GoToLoginCommand = new Command(GoToLogin);
         }
+
+        /// <summary>
+        /// Navigates to the login view
+        /// </summary>
         private async void GoToLogin()
         {
             await NavigationService.NavigateToAsync(typeof(LoginViewModel));
@@ -74,24 +78,23 @@ namespace XaBikeStand.ViewModels
             UserNameErrorVisibile = false;
         }
 
+        /// <summary>
+        /// Registers an account and goes to the actions view if successful
+        /// </summary>
         private async void RegisterAccount()
         {
-
-            //bool isEmailValid = Regex.IsMatch(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-            //@"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", email ,RegexOptions.IgnoreCase);
-
             bool isEmailValid = (Regex.IsMatch(email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
             @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
 
             bool isPasswordValid = (Regex.IsMatch(password, @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
-            //bool isPasswordValid = Regex.IsMatch(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password, RegexOptions.IgnoreCase);
             if (isEmailValid && isPasswordValid && !String.IsNullOrEmpty(username))
             {
                 User user = new User { userName = username, psw = password, email = email };
-                ISerializable serializable = serverClient.PostData(user, Target.RegiserUser);
-                if (serializable != null)
+                User addedUser = serverClient.AddUser(user);
+                if (addedUser != null)
                 {
-                    sharedData.LoggedInUser = (User)serializable;
+                    sharedData.LoggedInUser = addedUser;
+                    ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = true;
                     await NavigationService.NavigateToAsync(typeof(ActionsViewModel));
                 }
                 else

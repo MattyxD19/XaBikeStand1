@@ -6,20 +6,25 @@
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-    mc:Ignorable="d"
-             x:Class="XaBikeStand.Views.ScannerView">
+             NavigationPage.HasNavigationBar="False"
+             mc:Ignorable="d"
+             x:Class="XaBikeStand.Views.ScannerView"
+             BackgroundColor="Black">
     <ContentPage.Content>
-        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout>
+            <Button Text="Go back" Command="{Binding GoBackCommand}"></Button>
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <zxing:ZXingScannerView                                      
                     Result="{Binding Result, Mode=TwoWay}" 
                     ScanResultCommand="{Binding OnScanCommand}" 
                     IsScanning="True"
                     IsAnalyzing="True" />
 
-            <zxing:ZXingDefaultOverlay               
+            <zxing:ZXingDefaultOverlay             
                 x:Name="scannerOverlay"                                                       
-                BottomText="Place the red line over the barcode you'd like to scan." />
+                TopText="Place the red line over the barcode you'd like to scan." />
 
         </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -25,6 +25,11 @@ namespace XaBikeStand.CustomBehaviors
             bindable.Focused += HandleFocused;
         }
 
+        /// <summary>
+        /// Handles email validation and sets the text to red if wrong 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void HandleUnFocused(object sender, EventArgs e)
         {
             Entry thisEntry = ((Entry)sender);

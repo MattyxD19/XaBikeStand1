@@ -8,9 +8,7 @@ namespace XaBikeStand.Models
 {
     public class ServerClient
     {
-        private const String local = "http://localhost:3000/";
-        private const String azure = "https://bikerack.azurewebsites.net/";
-        private const String standardAddress = azure;
+        private const String standardAddress = "https://bikerack.azurewebsites.net/";
 
         private SingletonSharedData sharedData;
 
@@ -19,6 +17,12 @@ namespace XaBikeStand.Models
             sharedData = SingletonSharedData.GetInstance();
         }
 
+        /// <summary>
+        /// Contacts the backend in order to login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public User Login(String username, String password)
         {
             String responseFromServer = "";
@@ -26,7 +30,6 @@ namespace XaBikeStand.Models
             String target = standardAddress + "users/login";
 
             String jsonData = "{\"userName\": \"" + username + "\", \"psw\": \"" + password + "\" }";
-
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
@@ -38,8 +41,6 @@ namespace XaBikeStand.Models
                 {
                     streamWriter.Write(jsonData);
                 }
-
-
             }
             User foundUser = null;
             try
@@ -54,6 +55,11 @@ namespace XaBikeStand.Models
             return foundUser;
         }
 
+
+        /// <summary>
+        /// Contacts the backend in order to get all bike stations
+        /// </summary>
+        /// <returns></returns>
         public ObservableCollection<BikeStation> GetBikeStations()
         {
             String responseFromServer = "";
@@ -68,6 +74,11 @@ namespace XaBikeStand.Models
             return bikeStations;
         }
 
+        /// <summary>
+        /// Gets the response from the backend
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private String GetResponse(WebRequest request)
         {
             String responseFromServer = "";
@@ -84,12 +95,17 @@ namespace XaBikeStand.Models
             }
         }
 
-        public ISerializable PostData(ISerializable serializable, String target)
+        /// <summary>
+        /// Contacts the backend in order to add a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public User AddUser(User user)
         {
             String responseFromServer = "";
 
-            String jsonData = JsonConvert.SerializeObject(serializable);
-            target = standardAddress + target;
+            String jsonData = JsonConvert.SerializeObject(user);
+            String target = standardAddress + "users/register";
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
@@ -101,21 +117,24 @@ namespace XaBikeStand.Models
                     streamWriter.Write(jsonData);
                 }
 
-                ISerializable foundSerializable = null;
+                User addedUser = null;
                 try
                 {
                     responseFromServer = GetResponse(request);
-                    foundSerializable = JsonConvert.DeserializeObject<User>(responseFromServer);
+                    addedUser = JsonConvert.DeserializeObject<User>(responseFromServer);
                 }
                 catch (System.Net.WebException)
                 {
                 }
-
-                return foundSerializable;
+                return addedUser;
             }
         }
 
-
+        /// <summary>
+        /// Contacts the backend in order to delete a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public User DeleteUser(String id)
         {
             String response = "";
@@ -141,6 +160,11 @@ namespace XaBikeStand.Models
             return deletedUser;
         }
 
+        /// <summary>
+        /// Contacts the backend in order to update a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public User UpdateUser(User user)
         {
             String responseFromServer = "";
@@ -181,6 +205,11 @@ namespace XaBikeStand.Models
             }
         }
 
+        /// <summary>
+        /// Contacts the backend in order to lock a bikestand
+        /// </summary>
+        /// <param name="bikestandID"></param>
+        /// <returns></returns>
         public BikeStandRegistration Lock(int bikestandID)
         {
             String responseFromServer = "";
@@ -208,6 +237,10 @@ namespace XaBikeStand.Models
 
         }
 
+        /// <summary>
+        /// Contacts the backend in order unlock a bikestand
+        /// </summary>
+        /// <returns></returns>
         public bool Unlock()
         {
             String responseFromServer = "";
@@ -234,6 +267,11 @@ namespace XaBikeStand.Models
             return false;
         }
 
+        /// <summary>
+        /// Contacts the backend in order to get the availability of a bike station 
+        /// </summary>
+        /// <param name="bikeStationID"></param>
+        /// <returns></returns>
         public Availability GetAvailability(String bikeStationID)
         {
             String response = "";
@@ -251,18 +289,10 @@ namespace XaBikeStand.Models
         }
 
 
-
-
-
-        private String GetStatusCode(WebRequest request)
-        {
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                return response.StatusCode.ToString();
-            }
-        }
-
-
+        /// <summary>
+        /// Contacts the backend in order to get a locked bikestand
+        /// </summary>
+        /// <returns></returns>
         public BikeStandRegistration GetLockedBikestand()
         {
             String response = "";
@@ -291,6 +321,11 @@ namespace XaBikeStand.Models
             return bikestand;
         }
 
+        /// <summary>
+        /// Contacts the backend in order to get a bike station
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public BikeStation GetBikeStation(String id)
         {
             String response = "";
@@ -317,7 +352,11 @@ namespace XaBikeStand.Models
 
         }
 
-
+        /// <summary>
+        /// Contacts the backend in order to add a registration to another user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public bool ShareBikestandLock(String username)
         {
             String responseFromServer = "";
@@ -340,12 +379,17 @@ namespace XaBikeStand.Models
                 responseFromServer = GetResponse(request);
                 succes = true;
             }
-            catch (System.Net.WebException)
+            catch (WebException)
             {
             }
             return succes;
         }
 
+
+        /// <summary>
+        /// Contacts the backend in order to get the username of a shared access to a bikestand
+        /// </summary>
+        /// <returns></returns>
         public String GetSharedUsername()
         {
             String response = null;
@@ -368,7 +412,11 @@ namespace XaBikeStand.Models
             return response;
         }
 
-
+        /// <summary>
+        /// Contacts the backend in order to delete shared access to a bikestand
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteSharedAccess(String id)
         {
             String response = "";
@@ -387,14 +435,12 @@ namespace XaBikeStand.Models
                 response = GetResponse(request);
                 succes = true;
             }
-            catch (System.Net.WebException)
+            catch (WebException)
             {
             }
-
             return succes;
         }
     }
-
 }
 
 
