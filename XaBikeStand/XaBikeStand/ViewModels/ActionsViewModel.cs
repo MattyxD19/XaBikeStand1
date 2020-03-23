@@ -8,7 +8,12 @@ namespace XaBikeStand.ViewModels
     class ActionsViewModel : BaseViewModel
     {
         SingletonSharedData sharedData;
+        ServerClient serverClient;
+        private string sharedAccessTo;
 
+
+
+        #region -- Binding properties -- 
         private bool isLockIDEnabled;
 
         public bool IsLockIDEnabled
@@ -16,14 +21,6 @@ namespace XaBikeStand.ViewModels
             get { return isLockIDEnabled; }
             set { isLockIDEnabled = value; propertyIsChanged(); }
         }
-
-
-        ServerClient serverClient;
-
-        public bool stationIDEntered = false;
-        public bool lockIDEntered = false;
-
-
 
 
 
@@ -42,6 +39,7 @@ namespace XaBikeStand.ViewModels
             }
         }
 
+
         private string sharedWithText;
 
         public string SharedWithText
@@ -56,7 +54,6 @@ namespace XaBikeStand.ViewModels
                 propertyIsChanged();
             }
         }
-
 
 
         private string _StationID;
@@ -74,33 +71,33 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        private string _LockID;
+        private string lockID;
 
         public string LockID
         {
             get
             {
-                return _LockID;
+                return lockID;
             }
             set
             {
-                _LockID = value;
+                lockID = value;
                 propertyIsChanged();
             }
         }
 
 
-        private bool _UnlockVisible;
+        private bool unlockVisible;
 
         public bool UnlockVisible
         {
             get
             {
-                return _UnlockVisible;
+                return unlockVisible;
             }
             set
             {
-                _UnlockVisible = value;
+                unlockVisible = value;
                 propertyIsChanged();
             }
         }
@@ -135,20 +132,18 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-        private string sharedAccessTo;
 
-
-        private bool _LockVisible;
+        private bool lockVisible;
 
         public bool LockVisible
         {
             get
             {
-                return _LockVisible;
+                return lockVisible;
             }
             set
             {
-                _LockVisible = value;
+                lockVisible = value;
                 propertyIsChanged();
             }
         }
@@ -167,7 +162,6 @@ namespace XaBikeStand.ViewModels
                 propertyIsChanged();
             }
         }
-
 
 
         private bool isAddFriendVisible;
@@ -216,8 +210,6 @@ namespace XaBikeStand.ViewModels
         }
 
 
-
-
         private string bikeStationText;
 
         public string BikeStationText
@@ -229,8 +221,9 @@ namespace XaBikeStand.ViewModels
                 propertyIsChanged();
             }
         }
+        #endregion
 
-        #region --Command implementations--
+        #region --Commands--
 
         public ICommand UnlockCommand { get; set; }
 
@@ -242,9 +235,6 @@ namespace XaBikeStand.ViewModels
         public ICommand NavigateScannerViewCommand { get; set; }
 
         public ICommand RemoveSharedCommand { get; set; }
-
-
-
         #endregion
 
 
@@ -265,7 +255,6 @@ namespace XaBikeStand.ViewModels
 
         private void RemoveShared()
         {
-            Console.WriteLine("sharedaccessto" + sharedAccessTo);
             if (serverClient.DeleteSharedAccess(sharedAccessTo))
             {
                 IsAddFriendEnabled = true;
@@ -294,7 +283,6 @@ namespace XaBikeStand.ViewModels
             if (int.TryParse(LockID, out int convertedLockID))
             {
                 bikestandRegistration = serverClient.Lock(convertedLockID);
-
             }
             else
             {
@@ -371,7 +359,7 @@ namespace XaBikeStand.ViewModels
                 IsLockIDEnabled = false;
                 IsAddFriendEnabled = true;
                 IsAddFriendVisible = true;
-                BikeStation bikeStation = serverClient.GetBikeStation(""+ bikestandRegistration.BikeStandID);
+                BikeStation bikeStation = serverClient.GetBikeStation("" + bikestandRegistration.BikeStandID);
                 if (bikeStation != null)
                 {
                     BikeStationText = String.Format("Your bike was locked at {0} on the {1}", bikeStation.title, bikestandRegistration.RegistrationTime);

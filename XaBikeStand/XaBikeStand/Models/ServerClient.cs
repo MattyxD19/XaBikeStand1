@@ -45,7 +45,6 @@ namespace XaBikeStand.Models
             try
             {
                 responseFromServer = GetResponse(request);
-                Console.WriteLine("response " + responseFromServer);
                 foundUser = JsonConvert.DeserializeObject<User>(responseFromServer);
             }
             catch (System.Net.WebException)
@@ -91,7 +90,6 @@ namespace XaBikeStand.Models
 
             String jsonData = JsonConvert.SerializeObject(serializable);
             target = standardAddress + target;
-            Console.WriteLine(jsonData);
             WebRequest request = WebRequest.Create(target);
             request.Method = "POST";
             request.ContentType = "application/json";
@@ -107,7 +105,6 @@ namespace XaBikeStand.Models
                 try
                 {
                     responseFromServer = GetResponse(request);
-                    Console.WriteLine("response " + responseFromServer);
                     foundSerializable = JsonConvert.DeserializeObject<User>(responseFromServer);
                 }
                 catch (System.Net.WebException)
@@ -137,9 +134,8 @@ namespace XaBikeStand.Models
                 response = GetResponse(request);
                 deletedUser = JsonConvert.DeserializeObject<User>(response);
             }
-            catch (System.Net.WebException e)
+            catch (System.Net.WebException)
             {
-                Console.WriteLine(e.Message);
             }
 
             return deletedUser;
@@ -157,7 +153,6 @@ namespace XaBikeStand.Models
             {
                 jsonData = "{\"userName\": \"" + user.userName + "\", \"email\": \"" + user.email + "\" }";
             }
-            Console.WriteLine("json my " + jsonData);
             String target = standardAddress + "users/" + user.userName;
 
             WebRequest request = WebRequest.Create(target);
@@ -178,9 +173,8 @@ namespace XaBikeStand.Models
                     responseFromServer = GetResponse(request);
                     updatedUser = JsonConvert.DeserializeObject<User>(responseFromServer);
                 }
-                catch (System.Net.WebException e)
+                catch (System.Net.WebException)
                 {
-                    Console.WriteLine(e.Message);
                 }
 
                 return updatedUser;
@@ -253,7 +247,6 @@ namespace XaBikeStand.Models
 
 
             response = GetResponse(request);
-            Console.WriteLine("availability " + response);
             return JsonConvert.DeserializeObject<Availability>(response);
         }
 
@@ -304,7 +297,6 @@ namespace XaBikeStand.Models
 
             String target = standardAddress + "bikeStations/" + id;
 
-            Console.WriteLine("target" + target);
 
             WebRequest request = WebRequest.Create(target);
             request.Method = "GET";
@@ -315,7 +307,6 @@ namespace XaBikeStand.Models
             try
             {
                 response = GetResponse(request);
-                Console.WriteLine("response " + response);
                 bikeStation = JsonConvert.DeserializeObject<BikeStation>(response);
             }
             catch (WebException) { }
@@ -349,9 +340,8 @@ namespace XaBikeStand.Models
                 responseFromServer = GetResponse(request);
                 succes = true;
             }
-            catch (System.Net.WebException e)
+            catch (System.Net.WebException)
             {
-                Console.WriteLine(e.Message);
             }
             return succes;
         }
@@ -397,9 +387,8 @@ namespace XaBikeStand.Models
                 response = GetResponse(request);
                 succes = true;
             }
-            catch (System.Net.WebException e)
+            catch (System.Net.WebException)
             {
-                Console.WriteLine(e.Message);
             }
 
             return succes;

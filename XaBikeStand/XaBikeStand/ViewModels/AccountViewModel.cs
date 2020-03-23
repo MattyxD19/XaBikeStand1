@@ -8,13 +8,16 @@ namespace XaBikeStand.ViewModels
 {
     class AccountViewModel : BaseViewModel
     {
+
         private ServerClient serverClient;
 
         private SingletonSharedData sharedData;
+
+
+        #region --Binding properties--
+
+
         private String email;
-
-
-
 
         public String Email
         {
@@ -29,6 +32,7 @@ namespace XaBikeStand.ViewModels
             get { return username; }
             set { username = value; }
         }
+
         private String password;
 
         public String Password
@@ -37,20 +41,19 @@ namespace XaBikeStand.ViewModels
             set { password = value; }
         }
 
-        public bool IsEmailValid { get; set; }
+        #endregion
 
+        #region -- Commands--
         public ICommand UpdateAccountCommand { get; set; }
-
-
-
         public ICommand DeleteAccountCommand { get; set; }
+        #endregion
+
         public AccountViewModel()
         {
             sharedData = SingletonSharedData.GetInstance();
             serverClient = new ServerClient();
             UpdateAccountCommand = new Command(UpdateAccount);
             DeleteAccountCommand = new Command(DeleteAccount);
-            IsEmailValid = false;
             Username = "Username : " + sharedData.LoggedInUser.userName;
             Email = sharedData.LoggedInUser.email;
         }
@@ -71,14 +74,8 @@ namespace XaBikeStand.ViewModels
             }
         }
 
-
-
-
         private async void UpdateAccount()
         {
-            //bool isEmailValid = Regex.IsMatch(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-            //@"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", email ,RegexOptions.IgnoreCase);
-
             bool isEmailValid = (Regex.IsMatch(email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
             @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
 
@@ -107,28 +104,5 @@ namespace XaBikeStand.ViewModels
                 }
             }
         }
-
-
-
-
-
-
-
-        /***
-         * The updated user should be sent to the database
-         * the method should be called from the SaveInfoCMD
-         * when done
-         *
-
-        private void UpdateUser()
-        {
-            //Backend 
-            //var uriDB = "";
-            //var updateContent = JsonConvert.SerializeObject(updatedUser);
-            //var response = await client.PutAsync(uriDB, updateContent);
-
-        }
-        */
-
     }
 }

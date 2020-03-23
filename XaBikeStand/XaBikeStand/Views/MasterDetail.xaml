@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XaBikeStand.Views.MasterDetail">
+             x:Class="XaBikeStand.Views.MasterDetail" 
+                  IsPresented="{Binding IsPresented}">
     <MasterDetailPage.Master>
         <ContentPage Title="Menu" Padding="10">
             <ContentPage.Content>
                 <StackLayout Margin="10" Orientation="Vertical">
                     <!-- <ListView x:Name="aboutList" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"> -->
-                    <ListView x:Name="navigationList" SeparatorVisibility="None" HasUnevenRows="True" ItemSelected="OnMenuItemSelected">
+                    <ListView x:Name="navigationList" SeparatorVisibility="None" HasUnevenRows="True" ItemsSource="{Binding MenuItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell >
@@ -32,7 +33,6 @@
             </ContentPage.Content>
         </ContentPage>
     </MasterDetailPage.Master>
-
     <MasterDetailPage.Detail>
         <ContentPage Title="Content" Padding="15">
             <ContentPage.Content>

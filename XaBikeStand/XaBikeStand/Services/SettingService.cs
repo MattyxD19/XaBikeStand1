@@ -42,9 +42,8 @@ namespace XaBikeStand.Services
             {
                 await Application.Current.SavePropertiesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Unable to save: " + key, " Message: " + ex.Message);
             }
         }
 
@@ -68,9 +67,8 @@ namespace XaBikeStand.Services
                     await Application.Current.SavePropertiesAsync();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Unable to remove: " + key, " Message: " + ex.Message);
             }
         }
 
