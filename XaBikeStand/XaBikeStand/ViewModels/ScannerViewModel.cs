@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using XaBikeStand.Models;
 using Xamarin.Forms;
 
@@ -16,8 +13,8 @@ namespace XaBikeStand.ViewModels
         {
             get { return result; }
             set { result = value; }
-        } 
-     
+        }
+
         public ICommand OnScanCommand { get; set; }
 
         public ScannerViewModel()

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using XaBikeStand.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using System.Collections.Generic;
 using XaBikeStand.Models;
 using XaBikeStand.ViewModels;
-using System.Reflection;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace XaBikeStand.Views
 {
@@ -72,7 +66,7 @@ namespace XaBikeStand.Views
                 ImagePath = "LogOutLogo.png",
                 TargetViewModel = typeof(LoginViewModel)
             });
-            
+
             return list;
         }
 

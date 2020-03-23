@@ -1,14 +1,12 @@
-﻿using XaBikeStand.Services;
-using XaBikeStand.ViewModels;
+﻿using Plugin.Connectivity;
+using Plugin.Connectivity.Abstractions;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Threading.Tasks;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using XaBikeStand.Models;
-using Plugin.Connectivity;
-using Rg.Plugins.Popup.Services;
+using XaBikeStand.Services;
+using XaBikeStand.ViewModels;
 using XaBikeStand.Views;
-using Plugin.Connectivity.Abstractions;
+using Xamarin.Forms;
 
 namespace XaBikeStand
 {
@@ -45,7 +43,7 @@ namespace XaBikeStand
             master.BindingContext = masterDetailViewModel;
 
             CrossConnectivity.Current.ConnectivityChanged += OnConnectivityChanged;
-       
+
         }
 
         private async void OnConnectivityChanged(Object sender, ConnectivityChangedEventArgs args)

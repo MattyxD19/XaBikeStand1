@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using XaBikeStand.Models;
-using XaBikeStand.ViewModels;
+﻿using XaBikeStand.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
-using static Xamarin.Essentials.Permissions;
 
 namespace XaBikeStand.Views
 {
@@ -23,7 +17,7 @@ namespace XaBikeStand.Views
         public MapView()
         {
             InitializeComponent();
-            
+
         }
 
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
