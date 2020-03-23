@@ -66,7 +66,8 @@ namespace XaBikeStand.ViewModels
         public async void OnPinClicked(Pin tappedPin)
         {
             var availablespots = serverClient.GetAvailability(tappedPin.Label.Substring(4, tappedPin.Label.Length - 4));
-            await Application.Current.MainPage.DisplayAlert("Pladser ved: " + tappedPin.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
+
+            await Application.Current.MainPage.DisplayAlert("Location: " + tappedPin.Address, "Spaces: " + availablespots.Total + "\n" + "Occupied: " + availablespots.Occupied, "OK");
         }
     }
 }

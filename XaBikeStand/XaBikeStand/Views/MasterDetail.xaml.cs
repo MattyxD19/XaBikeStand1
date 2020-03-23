@@ -12,7 +12,7 @@ namespace XaBikeStand.Views
         public MasterDetail()
         {
             InitializeComponent();
-        }
+}
 
         public void ClearSelection()
         {
