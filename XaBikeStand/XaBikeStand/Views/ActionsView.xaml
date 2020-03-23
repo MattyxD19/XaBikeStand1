@@ -38,7 +38,7 @@
                 </Image>
                 <Entry
                     x:Name="BikeStandNumber"
-                    Placeholder="Låsens nummer"
+                    Placeholder="Lock number"
                     Text="{Binding LockID}"
                     Keyboard="Numeric"
                     Grid.Row="1"
@@ -76,7 +76,7 @@
 
                 <Label 
 
-                    Text="Del din cykel med en ven"
+                    Text="Share your bike with a friend"
                     IsVisible="{Binding IsAddFriendVisible}"
                     FontSize="18"
                     Grid.Column="1"
@@ -102,7 +102,7 @@
 
                 <Button
                     x:Name="AddFriendButton"
-                    Text="Tilføj ven"
+                    Text="Add friend"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Command="{Binding ShareWithFriendCommand}"

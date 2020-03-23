@@ -25,14 +25,14 @@ namespace XaBikeStand.Views
 
             list.Add(new MasterMenuItems()
             {
-                Text = "Cykelsiden",
+                Text = "Bike page",
                 ImagePath = "BikeLogo.png",
                 TargetViewModel = typeof(ActionsViewModel)
             });
 
             list.Add(new MasterMenuItems()
             {
-                Text = "Kort",
+                Text = "Map",
                 ImagePath = "MapLogo.png",
                 TargetViewModel = typeof(MapViewModel)
             });
@@ -55,14 +55,14 @@ namespace XaBikeStand.Views
 
             list.Add(new MasterMenuItems()
             {
-                Text = "Konto",
+                Text = "Account",
                 ImagePath = "AccountLogo.png",
                 TargetViewModel = typeof(AccountViewModel)
             });
 
             list.Add(new MasterMenuItems()
             {
-                Text = "Log ud",
+                Text = "Log out",
                 ImagePath = "LogOutLogo.png",
                 TargetViewModel = typeof(LoginViewModel)
             });

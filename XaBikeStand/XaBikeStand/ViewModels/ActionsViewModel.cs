@@ -309,7 +309,7 @@ namespace XaBikeStand.ViewModels
                 UnlockVisible = true;
                 IsLockErrorVisible = false;
                 IsAddFriendVisible = true;
-                BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
+                BikeStationText = String.Format("Your bike was locked at {0} on the {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
                 IsBikeStationVisible = true;
             }
             else
@@ -374,7 +374,7 @@ namespace XaBikeStand.ViewModels
                 BikeStation bikeStation = serverClient.GetBikeStation(""+ bikestandRegistration.BikeStandID);
                 if (bikeStation != null)
                 {
-                    BikeStationText = String.Format("Din cykel blev låst ved {0} d. {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
+                    BikeStationText = String.Format("Your bike was locked at {0} on the {1}", bikeStation.title, bikestandRegistration.RegistrationTime);
                     IsBikeStationVisible = true;
                 }
                 String sharedWithUsername = serverClient.GetSharedUsername();
