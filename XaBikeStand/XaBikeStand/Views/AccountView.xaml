@@ -3,9 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:baseViewModel="clr-namespace:XaBikeStand.ViewModels;assembly=XaBikeStand"
              baseViewModel:ViewModelLocator.AutoWireViewModel="true"
+             xmlns:CustomBehavior="clr-namespace:XaBikeStand.CustomBehaviors;assembly=XaBikeStand"
              x:Class="XaBikeStand.Views.AccountView">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout  Padding="40" Spacing="10">
+            <Grid Margin ="20,0,20,0" VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.15*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0">
+                    <Label Text="Update user" FontSize="36" x:Name="LabelTxt" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,20,0,0" />
+                </StackLayout>
+                <StackLayout Grid.Row="1">
+                    <Label Text="{Binding Username}" IsEnabled="False" FontSize="24" x:Name="UserName" ></Label>
+                    <Entry Placeholder="Password" Text="{Binding Password}"  FontSize="24" x:Name="Password" >
+                        <Entry.Behaviors>
+                            <CustomBehavior:PasswordValidatorBehavior></CustomBehavior:PasswordValidatorBehavior>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label x:Name="passwordRequirementLabel" FontSize="12"  Text="Minimum 8 characters both letters and numbers" />
+                    <Entry Placeholder="Email" FontSize="24" Text="{Binding Email}"  x:Name="EmailEntry" >
+                        <Entry.Behaviors>
+                            <CustomBehavior:EmailValidatorBehavior x:Name="EmailValidator" IsValid ="{Binding IsEmailValid}"></CustomBehavior:EmailValidatorBehavior>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Button Margin="40" Text="Update" FontSize="24" HorizontalOptions="CenterAndExpand" TextColor="White"   WidthRequest="200" Command="{Binding UpdateAccountCommand}"/>
+
+                </StackLayout>
+                <Button  Text="Delete" BackgroundColor="Red" Grid.Row="2" FontSize="24" HorizontalOptions="CenterAndExpand" TextColor="White"   WidthRequest="200" Command="{Binding DeleteAccountCommand}"/>
+
+
+            </Grid>
+        </StackLayout>
+        <!--<StackLayout>
             <Grid>
                 <Label Text="Konto informationer" 
                        FontSize="Large" 
@@ -75,6 +107,6 @@
                 </Button>
                 
             </Grid>
-        </StackLayout>
+        </StackLayout>-->
     </ContentPage.Content>
 </ContentPage>

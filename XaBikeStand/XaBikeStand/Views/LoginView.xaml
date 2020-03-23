@@ -15,53 +15,51 @@
 
 
     <ContentPage.Content>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
 
-        <ScrollView>
-                <Grid  VerticalOptions="CenterAndExpand">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
 
-                </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.8*"/>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="0.05*"/>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="0.1*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Padding="40" Grid.Row="0"></StackLayout>
+            <Image Source="BikeRack.png" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3"  Grid.ColumnSpan="4" />
+            <Entry Placeholder="UserName" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" >
+                <Entry.Behaviors>
+                    <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Entry Placeholder="Password" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16" IsPassword="True"  x:Name="EntryPassword" Text="{Binding Password}"  >
+                <Entry.Behaviors>
+                    <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
+                    <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label x:Name="loginErrorLabel" Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="1" Text="Invalid username or password" TextColor="Red" IsVisible="{Binding IsLoginErrorVisible}"></Label>
 
-                    </Grid.RowDefinitions>
-                    <Image Source="BikeRack.png" Grid.Row="0" Grid.ColumnSpan="4" />
-                    <Entry Placeholder="UserName" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16"  x:Name="EntryUser" Text="{Binding Username}" >
-                            <Entry.Behaviors>
-                                <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
-                            </Entry.Behaviors>
-                        </Entry>
-                <Entry Placeholder="Password" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1" FontSize="16" IsPassword="True"  x:Name="EntryPassword" Text="{Binding Password}"  >
-                            <Entry.Behaviors>
-                                <CustomBehavior:EventToCommandBehavior EventName="Completed" Command="{Binding LoginCommand}" />
-                                <CustomBehavior:EventToCommandBehavior EventName="Focused" Command="{Binding OnEntryFocusedCommand}" />
-                            </Entry.Behaviors>
-                        </Entry>
-                <Label x:Name="loginErrorLabel" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="1" Text="Invalid username or password" TextColor="Red" IsVisible="{Binding IsLoginErrorVisible}"></Label>
+            <Button Text="Login" HorizontalOptions="CenterAndExpand"  Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="1" WidthRequest="200"  Command="{Binding LoginCommand}"/>
 
-                <Button Text="Login" HorizontalOptions="CenterAndExpand"  Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1" WidthRequest="200"  Command="{Binding LoginCommand}"/>
+            <Label Text="I don't have an account yet" VerticalOptions="Center" Grid.Row="8" Grid.ColumnSpan="2" Grid.Column="1" HorizontalOptions="Center" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding GoToRegisterPageCommand}" ></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+            <StackLayout Padding="40" Grid.Row="9"></StackLayout>
 
-                <Label Text="I don't have an account yet" VerticalOptions="Center" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="1" HorizontalOptions="Center" >
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding GoToRegisterPageCommand}" ></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>
-                </Grid>
-        </ScrollView>
-
-
+        </Grid>
     </ContentPage.Content>
-
-
 </ContentPage>

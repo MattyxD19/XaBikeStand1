@@ -120,6 +120,75 @@ namespace XaBikeStand.Models
             }
         }
 
+
+        public User DeleteUser(String id)
+        {
+            String response = "";
+
+            String target = standardAddress + "users/" + id;
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "Delete";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+
+            User deletedUser = null;
+            try
+            {
+                response = GetResponse(request);
+                deletedUser = JsonConvert.DeserializeObject<User>(response);
+            }
+            catch (System.Net.WebException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return deletedUser;
+        }
+
+        public User UpdateUser(User user)
+        {
+            String responseFromServer = "";
+            String jsonData = "";
+            if (user.psw != null)
+            {
+                jsonData = JsonConvert.SerializeObject(user);
+            }
+            else
+            {
+                jsonData = "{\"userName\": \"" + user.userName + "\", \"email\": \"" + user.email + "\" }";
+            }
+            Console.WriteLine("json my " + jsonData);
+            String target = standardAddress + "users/" + user.userName;
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "PUT";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                using (StreamWriter streamWriter = new StreamWriter(requestStream))
+                {
+                    streamWriter.Write(jsonData);
+                }
+
+                User updatedUser = null;
+                try
+                {
+                    responseFromServer = GetResponse(request);
+                    updatedUser = JsonConvert.DeserializeObject<User>(responseFromServer);
+                }
+                catch (System.Net.WebException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                return updatedUser;
+            }
+        }
+
         public BikeStation Lock(int bikestandID)
         {
             String responseFromServer = "";
@@ -224,7 +293,7 @@ namespace XaBikeStand.Models
                     bikestand = JsonConvert.DeserializeObject<BikeStand>(response);
                 }
             }
-            catch (WebException){}
+            catch (WebException) { }
             catch (JsonSerializationException) { }
 
 
@@ -286,6 +355,56 @@ namespace XaBikeStand.Models
             {
                 Console.WriteLine(e.Message);
             }
+            return succes;
+        }
+
+        public String GetSharedUsername ()
+        {
+            String response = null;
+
+            String target = standardAddress + "bikestandRegistration/getSharedUsername";
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+
+            BikeStand bikestand = null;
+            try
+            {
+                response = GetResponse(request);
+            }
+            catch (WebException) { }
+            catch (JsonSerializationException) { }
+
+            return response;
+        }
+
+        
+        public bool DeleteSharedAccess(String id)
+        {
+            String response = "";
+
+            String target = standardAddress + "bikestandRegistration/deleteFromUsername/" + id;
+
+            WebRequest request = WebRequest.Create(target);
+            request.Method = "Delete";
+            request.ContentType = "application/json";
+            request.Headers.Add("x-access-token", sharedData.LoggedInUser.token);
+
+
+            bool succes = false;
+            try
+            {
+                response = GetResponse(request);
+                succes = true;
+            }
+            catch (System.Net.WebException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             return succes;
         }
     }
