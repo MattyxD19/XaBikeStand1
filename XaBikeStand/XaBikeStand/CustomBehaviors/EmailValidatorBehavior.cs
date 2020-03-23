@@ -36,7 +36,6 @@ namespace XaBikeStand.CustomBehaviors
             {
                 IsValid = false;
             }
-            Console.WriteLine("BEHAVIOR " + IsValid);
             thisEntry.TextColor = IsValid ? Color.FromHex("66e6d9") : Color.Red;
 
         }

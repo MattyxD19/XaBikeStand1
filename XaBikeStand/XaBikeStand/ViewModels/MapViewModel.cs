@@ -1,54 +1,38 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using XaBikeStand.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace XaBikeStand.ViewModels
 {
-    class MapViewModel : BaseViewModel, INotifyPropertyChanged
+    class MapViewModel : BaseViewModel
     {
-        public MapViewModel()
-        {
-            try
-            {
-                GetPins();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
 
-        private Pin _pin;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         ServerClient serverClient = new ServerClient();
-        public ObservableCollection<BikeStation> bikeStations = new ObservableCollection<BikeStation>();
+        public ObservableCollection<BikeStation> bikeStations;
 
-        #region --Binding--
+        #region --Binding properties--
 
         private ObservableCollection<Pin> pins { get; set; }
 
         public ObservableCollection<Pin> Pins
         {
             get { return pins; }
-            set { pins = value; OnPropertyChanged(); }
-        }
-
-        public Pin Pin
-        {
-            get => _pin;
-            set => _pin = value;
+            set { pins = value; propertyIsChanged(); }
         }
         #endregion
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public MapViewModel()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            try
+            {
+                GetPins();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
@@ -56,11 +40,10 @@ namespace XaBikeStand.ViewModels
         /// The bikestation information is then added to the pin
         /// where as the pin is added to the map
         /// </summary>
-        
         private void GetPins()
         {
             Pins = new ObservableCollection<Pin>();
-            var bikeStations = serverClient.GetBikeStations();
+            bikeStations = serverClient.GetBikeStations();
 
             foreach (var item in bikeStations)
             {
@@ -80,12 +63,10 @@ namespace XaBikeStand.ViewModels
         /// It shows information about a bikestation</summary>
         /// when the pin is tapped on the map 
         /// <param name="tappedPin"></param>
-
         public async void OnPinClicked(Pin tappedPin)
         {
             var availablespots = serverClient.GetAvailability(tappedPin.Label.Substring(4, tappedPin.Label.Length - 4));
             await Application.Current.MainPage.DisplayAlert("Pladser ved: " + tappedPin.Address, "Antal pladser: " + availablespots.Total + "\n" + "Optaget: " + availablespots.Occupied, "OK");
-
         }
     }
 }

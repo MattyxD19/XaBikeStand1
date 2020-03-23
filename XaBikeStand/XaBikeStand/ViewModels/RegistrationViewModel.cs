@@ -11,7 +11,14 @@ namespace XaBikeStand.ViewModels
         private ServerClient serverClient;
 
         private SingletonSharedData sharedData;
+
+        #region --Binding properties--
         private String email;
+        public String Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
 
 
         private bool userNameErrorVisibile;
@@ -22,11 +29,6 @@ namespace XaBikeStand.ViewModels
             set { userNameErrorVisibile = value; propertyIsChanged(); }
         }
 
-        public String Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
 
         private String username;
 
@@ -35,6 +37,8 @@ namespace XaBikeStand.ViewModels
             get { return username; }
             set { username = value; }
         }
+
+
         private String password;
 
         public String Password
@@ -42,14 +46,16 @@ namespace XaBikeStand.ViewModels
             get { return password; }
             set { password = value; }
         }
+        #endregion
 
-        public bool IsEmailValid { get; set; }
-
+        #region --Commands--
         public ICommand RegisterAccountCommand { get; set; }
 
         public ICommand UsernameOnFocusCommand { get; set; }
 
         public ICommand GoToLoginCommand { get; set; }
+        #endregion
+
         public RegistrationViewModel()
         {
             sharedData = SingletonSharedData.GetInstance();
@@ -57,7 +63,6 @@ namespace XaBikeStand.ViewModels
             RegisterAccountCommand = new Command(RegisterAccount);
             UsernameOnFocusCommand = new Command(UsernameOnFocus);
             GoToLoginCommand = new Command(GoToLogin);
-            IsEmailValid = false;
         }
         private async void GoToLogin()
         {
@@ -80,10 +85,8 @@ namespace XaBikeStand.ViewModels
 
             bool isPasswordValid = (Regex.IsMatch(password, @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
             //bool isPasswordValid = Regex.IsMatch(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password, RegexOptions.IgnoreCase);
-            Console.WriteLine("email " + isEmailValid + "test " + password);
             if (isEmailValid && isPasswordValid && !String.IsNullOrEmpty(username))
             {
-                Console.WriteLine("email valid" + isEmailValid);
                 User user = new User { userName = username, psw = password, email = email };
                 ISerializable serializable = serverClient.PostData(user, Target.RegiserUser);
                 if (serializable != null)

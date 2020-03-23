@@ -8,16 +8,11 @@ namespace XaBikeStand.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
-
-
         private ServerClient serverClient;
         private SingletonSharedData sharedData;
-        public ICommand LoginCommand { get; set; }
 
-        public ICommand GoToRegisterPageCommand { get; set; }
 
-        public ICommand OnEntryFocusedCommand { get; set; }
-
+        #region --Binding properties--
         private bool isLoginErrorVisible;
 
         public bool IsLoginErrorVisible
@@ -42,10 +37,19 @@ namespace XaBikeStand.ViewModels
             get { return password; }
             set { password = value; propertyIsChanged(); }
         }
+        #endregion
+
+        #region --Commands--
+        public ICommand LoginCommand { get; set; }
+
+        public ICommand GoToRegisterPageCommand { get; set; }
+
+        public ICommand OnEntryFocusedCommand { get; set; }
+        #endregion
+
 
         public LoginViewModel()
         {
-            Console.WriteLine("it came to the login");
             ((MasterDetailPage)Application.Current.MainPage).IsGestureEnabled = false;
             if (username != null)
             {
@@ -54,7 +58,6 @@ namespace XaBikeStand.ViewModels
             if (Application.Current.Properties.ContainsKey("username"))
             {
                 Username = Application.Current.Properties["username"].ToString();
-                Console.WriteLine("username" + Application.Current.Properties["username"].ToString());
             }
             LoginCommand = new Command(Login);
             GoToRegisterPageCommand = new Command(GoToRegisterPage);
@@ -63,6 +66,7 @@ namespace XaBikeStand.ViewModels
             sharedData = SingletonSharedData.GetInstance();
 
         }
+
 
         private void OnEntryFocused()
         {
@@ -104,7 +108,5 @@ namespace XaBikeStand.ViewModels
         {
             await NavigationService.NavigateToAsync(typeof(RegistrationViewModel));
         }
-
-
     }
 }

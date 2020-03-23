@@ -6,7 +6,7 @@ namespace XaBikeStand.ViewModels
 {
     public class ScannerViewModel : BaseViewModel
     {
-
+        #region --Binding properties--
         private ZXing.Result result;
 
         public ZXing.Result Result
@@ -14,8 +14,11 @@ namespace XaBikeStand.ViewModels
             get { return result; }
             set { result = value; }
         }
+        #endregion
 
+        #region --Commands--
         public ICommand OnScanCommand { get; set; }
+        #endregion
 
         public ScannerViewModel()
         {

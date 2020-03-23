@@ -26,7 +26,7 @@
                     <Label x:Name="passwordRequirementLabel" FontSize="12"  Text="Minimum 8 characters both letters and numbers" />
                     <Entry Placeholder="Email" FontSize="24" Text="{Binding Email}"  x:Name="EmailEntry" >
                         <Entry.Behaviors>
-                            <CustomBehavior:EmailValidatorBehavior x:Name="EmailValidator" IsValid ="{Binding IsEmailValid}"></CustomBehavior:EmailValidatorBehavior>
+                            <CustomBehavior:EmailValidatorBehavior x:Name="EmailValidator"></CustomBehavior:EmailValidatorBehavior>
                         </Entry.Behaviors>
                     </Entry>
                     <Button Margin="40" Text="Update" FontSize="24" HorizontalOptions="CenterAndExpand" TextColor="White"   WidthRequest="200" Command="{Binding UpdateAccountCommand}"/>

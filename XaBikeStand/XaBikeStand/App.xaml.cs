@@ -28,17 +28,13 @@ namespace XaBikeStand
             ServiceContainer.Register<ActionsViewModel>(() => new ActionsViewModel());
             ServiceContainer.Register<MapViewModel>(() => new MapViewModel());
             ServiceContainer.Register<AccountViewModel>(() => new AccountViewModel());
-            ServiceContainer.Register<InfoViewModel>(() => new InfoViewModel());
-            ServiceContainer.Register<AboutUsViewModel>(() => new AboutUsViewModel());
             ServiceContainer.Register<ScannerViewModel>(() => new ScannerViewModel());
 
 
             var masterDetailViewModel = new MasterDetailViewModel();
             ServiceContainer.Register<MasterDetailViewModel>(() => masterDetailViewModel);
 
-            //MainPage = new MainPage();
-
-            var master = new Views.MasterDetail();
+            var master = new MasterDetail();
             MainPage = master;
             master.BindingContext = masterDetailViewModel;
 

@@ -1,41 +1,88 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 using XaBikeStand.Models;
+using XaBikeStand.Views;
 using Xamarin.Forms;
 
 namespace XaBikeStand.ViewModels
 {
     class MasterDetailViewModel : BaseViewModel
     {
+        #region --Binding properties--
+        private bool isPresented;
 
-        /*
-        //relatively more clean MVVM
-        private MasterMenuItems _selectedItem = null;
+        public bool IsPresented
+        {
+            get { return isPresented; }
+            set { isPresented = value; propertyIsChanged(); }
+        }
+
+        private MasterMenuItems selectedItem;
 
         public MasterMenuItems SelectedItem
         {
             get
             {
-                return _selectedItem;
+                return selectedItem;
             }
             set
             {
-                _selectedItem = value;
-
-                if (_selectedItem == null)
+                selectedItem = value;
+                if (selectedItem == null)
                     return;
-
-                ChangeVMCMD.Execute(_selectedItem);
-
+                ChangeView(selectedItem);
                 SelectedItem = null;
             }
-        }*/
+        }
 
+        private List<MasterMenuItems> menuItems;
 
-        public ICommand ChangeVMCMD => new Command<MasterMenuItems>(async (MasterMenuItems mmi) =>
+        public List<MasterMenuItems> MenuItems
         {
+            get { return menuItems; }
+            set { menuItems = value; }
+        }
+        #endregion
 
+
+        public MasterDetailViewModel()
+        {
+            MenuItems = new List<MasterMenuItems>();
+
+            MenuItems.Add(new MasterMenuItems()
+            {
+                Text = "Cykelsiden",
+                ImagePath = "BikeLogo.png",
+                TargetViewModel = typeof(ActionsViewModel)
+            });
+
+            MenuItems.Add(new MasterMenuItems()
+            {
+                Text = "Kort",
+                ImagePath = "MapLogo.png",
+                TargetViewModel = typeof(MapViewModel)
+            });
+
+            MenuItems.Add(new MasterMenuItems()
+            {
+                Text = "Konto",
+                ImagePath = "AccountLogo.png",
+                TargetViewModel = typeof(AccountViewModel)
+            });
+
+            MenuItems.Add(new MasterMenuItems()
+            {
+                Text = "Log ud",
+                ImagePath = "LogOutLogo.png",
+                TargetViewModel = typeof(LoginViewModel)
+            });
+        }
+
+        private async void ChangeView (MasterMenuItems mmi) 
+        {
+            IsPresented = false;
+            ((MasterDetail)(MasterDetailPage)Application.Current.MainPage).ClearSelection();
             await NavigationService.NavigateToAsync(mmi.TargetViewModel);
-
-        });
+        }
     }
 }
